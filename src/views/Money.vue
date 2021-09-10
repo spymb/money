@@ -1,29 +1,5 @@
 <template>
   <Layout>
-    <div class="tags">
-      <ul class="current">
-        <li>衣</li>
-        <li>食</li>
-        <li>住</li>
-        <li>行</li>
-      </ul>
-      <div class="new">
-        <button>新增标签</button>
-      </div>
-    </div>
-
-    <label class="notes">
-      <span class="name">备注</span>
-      <input type="text" placeholder="在此输入">
-    </label>
-
-    <div>
-      <ul class="inAndout">
-        <li class="selected">支出</li>
-        <li>收入</li>
-      </ul>
-    </div>
-
     <div class="numberPad">
       <div class="output">100</div>
       <div class="buttons">
@@ -43,6 +19,27 @@
         <button>.</button>
       </div>
     </div>
+    <div>
+      <ul class="inAndout">
+        <li class="selected">支出</li>
+        <li>收入</li>
+      </ul>
+    </div>
+    <label class="notes">
+      <span class="name">备注</span>
+      <input type="text" placeholder="在此输入">
+    </label>
+    <div class="tags">
+      <div class="new">
+        <button>新增标签</button>
+      </div>
+      <ul class="current">
+        <li>衣</li>
+        <li>食</li>
+        <li>住</li>
+        <li>行</li>
+      </ul>
+    </div>
   </Layout>
 </template>
 
@@ -52,9 +49,21 @@ export default {
 };
 </script>
 
+<style lang="scss">
+  .content{
+    border: 1px solid red;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+</style>
+
 <style lang="scss" scoped>
   @import "~@/assets/style/helper.scss";
   .tags {
+    border: 1px solid blue;
+    display: flex;
+    flex-direction: column-reverse;
+    flex-grow: 1;
     font-size: 14px;
     padding: 16px;
     > .current {
