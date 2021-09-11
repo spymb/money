@@ -3,7 +3,7 @@
     <Calculator/>
     <Types/>
     <Notes/>
-    <Tags :data-source="tags" />
+    <Tags :data-source.sync="tags" />
   </Layout>
 </template>
 
