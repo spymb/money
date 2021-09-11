@@ -1,29 +1,76 @@
 <template>
   <div class="numberPad">
-    <div class="output">100</div>
+    <div class="output">{{ output }}</div>
     <div class="buttons">
-      <button>1</button>
-      <button>2</button>
-      <button>3</button>
-      <button>删除</button>
-      <button>4</button>
-      <button>5</button>
-      <button>6</button>
-      <button>清空</button>
-      <button>7</button>
-      <button>8</button>
-      <button>9</button>
-      <button class="ok">OK</button>
-      <button class="zero">0</button>
-      <button>.</button>
+      <button @click="inputContent">1</button>
+      <button @click="inputContent">2</button>
+      <button @click="inputContent">3</button>
+      <button @click="remove">删除</button>
+      <button @click="inputContent">4</button>
+      <button @click="inputContent">5</button>
+      <button @click="inputContent">6</button>
+      <button @click="clear">清空</button>
+      <button @click="inputContent">7</button>
+      <button @click="inputContent">8</button>
+      <button @click="inputContent">9</button>
+      <button @click="ok" class="ok">OK</button>
+      <button @click="inputContent" class="zero">0</button>
+      <button @click="inputContent">.</button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-export default {
-  name: 'Calculator'
-};
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
+
+@Component
+export default class Calculator extends Vue {
+  output: string = '';
+
+  inputContent(event: MouseEvent) {
+    // 强制指定类型
+    const button = (event.target as HTMLButtonElement);
+    // 不为空
+    const input = button.textContent!;
+
+    // 第1个逻辑，判断输出长度
+    if (this.output.length === 16) {return;}
+
+    // 第2个逻辑，如果输出已经是0
+    if (this.output === '0') {
+      // 如果输入是0123456789中的任意一个
+      // 就用输入代替之前的输出
+      if ('0123456789'.indexOf(input) >= 0) {
+        this.output = input;
+        // 如果输入的是. 就追加在0的后面
+      } else {
+        this.output += input;
+      }
+      return;
+    }
+
+    // 第3个逻辑，如果再次出现.
+    if (this.output.indexOf('.') >= 0 && input === '.') {return;}
+
+    // 除了3个特殊逻辑的一般逻辑，不要忘记
+    this.output += input;
+  }
+
+  remove() {
+    if (this.output.length === 1) {
+      this.output = '0';
+    } else {
+      this.output = this.output.slice(0, -1);
+    }
+  }
+
+  clear() {
+    this.output = '0';
+  }
+
+  ok() {}
+}
 </script>
 
 <style lang="scss" scoped>
@@ -31,6 +78,7 @@ export default {
 
 .numberPad {
   > .output {
+    height: 72px;
     font-size: 36px;
     font-family: Consolas, monospace;
     padding: 9px 16px;
