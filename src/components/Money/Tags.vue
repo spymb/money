@@ -29,6 +29,8 @@ export default class Tags extends Vue {
     } else {
       this.selectedTags.push(tag);
     }
+    // toggle标签时触发更新事件，并将this.selectedTags作为参数传给事件被触发时执行的回调函数
+    this.$emit('update:value', this.selectedTags)
   }
 
   create() {
