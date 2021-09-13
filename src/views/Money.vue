@@ -1,8 +1,8 @@
 <template>
   <Layout>
     <!-- 监听各组件的更新事件，如事件被触发就执行对应的回调函数 -->
-    <Calculator @update:value="onUpdateAmount" />
-    <Types :value="record.type" @update:value="onUpdateType" />
+    <Calculator :value.sync="record.amount" />
+    <Types :value.sync="record.type" />
     <Notes @update:value="onUpdateNotes" />
     <Tags :data-source.sync="tags" @update:value="onUpdateTags" />
     {{ record }}
@@ -35,7 +35,7 @@ export default class Money extends Vue {
   record: Record = {
     tags: [],
     notes: "",
-    type: "",
+    type: "-",
     amount: 0,
   };
   // 下面的回调函数表示组件数据更新时，把更新的数据存入record

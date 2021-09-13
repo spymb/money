@@ -22,11 +22,12 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class Calculator extends Vue {
-  output: string = "";
+  @Prop() readonly value!: number;
+  output: string = this.value.toString();
 
   inputContent(event: MouseEvent) {
     // 强制指定类型
