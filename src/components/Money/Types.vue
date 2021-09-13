@@ -24,8 +24,6 @@ export default class Types extends Vue {
 }
 </script>
 
-
-
 <style lang="scss" scoped>
 .types {
   display: flex;

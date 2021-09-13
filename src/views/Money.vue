@@ -1,11 +1,11 @@
 <template>
   <Layout>
+    {{ recordList }}
     <!-- 监听各组件的更新事件，如事件被触发就执行对应的回调函数 -->
     <Calculator :value.sync="record.amount" @submit="saveRecord" />
     <Types :value.sync="record.type" />
     <Notes @update:value="onUpdateNotes" />
     <Tags :data-source.sync="tags" @update:value="onUpdateTags" />
-    {{ record }}
   </Layout>
 </template>
 
@@ -23,6 +23,7 @@ type Record = {
   notes: string;
   type: string;
   amount: number;
+  createdAt?: Date;
 };
 
 @Component({
@@ -30,7 +31,9 @@ type Record = {
 })
 export default class Money extends Vue {
   tags = ["衣", "食", "住", "行"];
-  recordList: Record[] = [];
+  recordList: Record[] = JSON.parse(
+    window.localStorage.getItem("recordList") || "[]"
+  );
   // 用声明的Record类型收集各组件数据，首先设置默认值
   // 一开始什么都没收集当然应该为空啦
   record: Record = {
@@ -49,7 +52,8 @@ export default class Money extends Vue {
   }
 
   saveRecord() {
-    const record2 = JSON.parse(JSON.stringify(this.record));
+    const record2: Record = JSON.parse(JSON.stringify(this.record));
+    record2.createdAt = new Date();
     this.recordList.push(record2);
     console.log(this.recordList);
   }
