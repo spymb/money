@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <!-- 监听各组件的更新事件，如事件被触发就执行对应的回调函数 -->
-    <Calculator :value.sync="record.amount" />
+    <Calculator :value.sync="record.amount" @submit="saveRecord" />
     <Types :value.sync="record.type" />
     <Notes @update:value="onUpdateNotes" />
     <Tags :data-source.sync="tags" @update:value="onUpdateTags" />
@@ -15,7 +15,7 @@ import Calculator from "@/components/Money/Calculator.vue";
 import Types from "@/components/Money/Types.vue";
 import Notes from "@/components/Money/Notes.vue";
 import Tags from "@/components/Money/Tags.vue";
-import { Component } from "vue-property-decorator";
+import { Component, Watch } from "vue-property-decorator";
 
 // TS声明一个类型
 type Record = {
@@ -30,6 +30,7 @@ type Record = {
 })
 export default class Money extends Vue {
   tags = ["衣", "食", "住", "行"];
+  recordList: Record[] = [];
   // 用声明的Record类型收集各组件数据，首先设置默认值
   // 一开始什么都没收集当然应该为空啦
   record: Record = {
@@ -39,20 +40,23 @@ export default class Money extends Vue {
     amount: 0,
   };
   // 下面的回调函数表示组件数据更新时，把更新的数据存入record
-  onUpdateAmount(value: string) {
-    this.record.amount = parseFloat(value);
-  }
-
-  onUpdateType(value: string) {
-    this.record.type = value;
-  }
-
   onUpdateNotes(value: string) {
     this.record.notes = value;
   }
 
   onUpdateTags(value: string[]) {
     this.record.tags = value;
+  }
+
+  saveRecord() {
+    const record2 = JSON.parse(JSON.stringify(this.record));
+    this.recordList.push(record2);
+    console.log(this.recordList);
+  }
+
+  @Watch("recordList")
+  onRecordListChanged() {
+    window.localStorage.setItem("recordList", JSON.stringify(this.recordList));
   }
 }
 </script>
