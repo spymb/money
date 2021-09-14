@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout class-prefix="xxx">
     {{ recordItemList }}
     <!-- 监听各组件的更新事件，如事件被触发就执行对应的回调函数 -->
     <Calculator :value.sync="recordItem.amount" @submit="saveRecordItem" />
@@ -59,7 +59,7 @@ export default class Money extends Vue {
 </script>
 
 <style lang="scss">
-.content {
+.xxx-content {
   display: flex;
   flex-direction: column-reverse;
 }
