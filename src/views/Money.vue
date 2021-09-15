@@ -16,13 +16,14 @@ import Types from "@/components/Money/Types.vue";
 import Notes from "@/components/Money/Notes.vue";
 import Tags from "@/components/Money/Tags.vue";
 import { Component, Watch } from "vue-property-decorator";
-import model from "@/model";
+import recordListModel from "@/models/recordListModel";
+import tagListModel from '@/models/tagListModel';
 
 @Component({
   components: { Tags, Notes, Types, Calculator },
 })
 export default class Money extends Vue {
-  tags = ["衣", "食", "住", "行"];
+  tags = tagListModel.fetch();
 
   // 用声明的RecordItem类型收集各组件数据，首先设置默认值
   // 一开始什么都没收集当然应该为空啦
@@ -33,7 +34,7 @@ export default class Money extends Vue {
     amount: 0,
   };
 
-  recordItemList = model.fetch();
+  recordItemList = recordListModel.fetch();
 
   // 下面的回调函数表示组件数据更新时，把更新的数据存入RecordItem
   onUpdateNotes(value: string) {
@@ -45,7 +46,7 @@ export default class Money extends Vue {
   }
 
   saveRecordItem() {
-    const recordItem2: RecordItem = model.clone(this.recordItem);
+    const recordItem2: RecordItem = recordListModel.clone(this.recordItem);
     recordItem2.createdAt = new Date();
     this.recordItemList.push(recordItem2);
     console.log(this.recordItemList);
@@ -53,7 +54,7 @@ export default class Money extends Vue {
 
   @Watch("recordItemList")
   onRecordItemListChanged() {
-    model.save(this.recordItemList);
+    recordListModel.save(this.recordItemList);
   }
 }
 </script>
