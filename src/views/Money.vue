@@ -3,7 +3,7 @@
     <!-- 监听各组件的更新事件，如事件被触发就执行对应的回调函数 -->
     <Calculator :value.sync="record.amount" @submit="saveRecord"/>
     <Types :value.sync="record.type"/>
-    <Notes @update:value="onUpdateNotes"/>
+    <Notes field-name="备注" placeholder="在此输入" @update:value="onUpdateNotes"/>
     <Tags :data-source.sync="tags" @update:value="onUpdateTags"/>
     {{ recordList }}
   </Layout>
