@@ -22,6 +22,7 @@ export default class Tags extends Vue {
   @Prop() readonly dataSource: string[] | undefined;
   selectedTags: string[] = [];
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   toggle(tag: string) {
     const index = this.selectedTags.indexOf(tag);
     if (index >= 0) {
@@ -33,6 +34,7 @@ export default class Tags extends Vue {
     this.$emit('update:value', this.selectedTags)
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   create() {
     const name = window.prompt('请输入标签名');
     if (name === '') {
@@ -47,6 +49,7 @@ export default class Tags extends Vue {
 
 <style lang="scss" scoped>
 .tags {
+  background: white;
   display: flex;
   flex-direction: column-reverse;
   flex-grow: 1;
