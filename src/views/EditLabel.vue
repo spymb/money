@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <div class="nav-bar">
-      <Icon class="icon-left" name="left"/>
+      <Icon class="icon-left" name="left" @click.native="goBack"/>
       <span class="title">编辑标签</span>
       <span class="icon-right"></span>
     </div>
@@ -54,6 +54,10 @@ export default class EditLabel extends Vue {
     if (this.tag) {
       tagListModel.remove(this.tag.id);
     }
+  }
+
+  goBack() {
+    this.$router.back();
   }
 
 }
