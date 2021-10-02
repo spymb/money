@@ -1,3 +1,5 @@
+import createID from '@/lib/createID';
+
 const localStorageKeyname = 'tagList';
 
 type Tag = {
@@ -20,6 +22,7 @@ const tagListModel = {
     return this.data;
   },
   create(name: string) {
+
     // 此时data的结构如下
     // [ {id: '1', name: '1'}, {id: '2', name: '2'}, {id: '3', name: '3'} ]
     // @ts-ignore
@@ -27,8 +30,9 @@ const tagListModel = {
     if (names.indexOf(name) >= 0) {
       return 'duplicated';
     }
+    const id = createID().toString();
     // @ts-ignore
-    this.data.push({id: name, name: name});
+    this.data.push({id, name: name});
     this.save();
     return 'success';
     return name;
