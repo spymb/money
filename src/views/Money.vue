@@ -7,7 +7,6 @@
       <FormItem field-name="备注" placeholder="在此输入" @update:value="onUpdateNotes"/>
     </div>
     <Tags :data-source.sync="tags" @update:value="onUpdateTags"/>
-    {{ recordList }}
   </Layout>
 </template>
 
@@ -22,13 +21,12 @@ import tagListModel from '@/models/tagListModel';
 import FormItem from '@/components/Money/FormItem.vue';
 
 const recordList = recordListModel.fetch();
-const tagList = tagListModel.fetch();
 
 @Component({
   components: {FormItem, Tags, Types, Calculator},
 })
 export default class Money extends Vue {
-  tags = tagList;
+  tags = window.tagList;
   recordList = recordList;
   // 用声明的Record类型收集各组件数据，首先设置默认值
   // 一开始什么都没收集当然应该为空啦
