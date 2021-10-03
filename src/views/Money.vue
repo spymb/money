@@ -15,18 +15,15 @@ import Vue from 'vue';
 import Calculator from '@/components/Money/Calculator.vue';
 import Types from '@/components/Money/Types.vue';
 import Tags from '@/components/Money/Tags.vue';
-import {Component, Watch} from 'vue-property-decorator';
-import recordListModel from '@/models/recordListModel';
+import {Component} from 'vue-property-decorator';
 import FormItem from '@/components/Money/FormItem.vue';
-
-const recordList = recordListModel.fetch();
 
 @Component({
   components: {FormItem, Tags, Types, Calculator},
 })
 export default class Money extends Vue {
   tags = window.tagList;
-  recordList = recordList;
+  recordList = window.recordList;
   // 用声明的Record类型收集各组件数据，首先设置默认值
   // 一开始什么都没收集当然应该为空啦
   // eslint-disable-next-line no-undef
@@ -47,13 +44,9 @@ export default class Money extends Vue {
   }
 
   saveRecord() {
-    recordListModel.create(this.record)
+    window.createRecord(this.record);
   }
 
-  @Watch('recordList')
-  onRecordListChanged() {
-    recordListModel.save();
-  }
 }
 </script>
 
@@ -61,6 +54,7 @@ export default class Money extends Vue {
 .notes {
   padding: 12px 0;
 }
+
 .xxx-content {
   display: flex;
   flex-direction: column-reverse;
