@@ -22,7 +22,6 @@ const tagListModel = {
     return this.data;
   },
   create(name: string) {
-
     // 此时data的结构如下
     // [ {id: '1', name: '1'}, {id: '2', name: '2'}, {id: '3', name: '3'} ]
     // @ts-ignore
