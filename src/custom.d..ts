@@ -9,7 +9,7 @@ type Tag = {
   id: string
   name: string
 }
-type tagListModel = {
+type TagListModel = {
   data: Tag[]
   fetch: () => Tag[]
   create: (name: string) => 'success' | 'duplicated' // 联合类型
@@ -20,5 +20,8 @@ type tagListModel = {
 
 interface Window {
   tagList: Tag[];
+  findTag: (id: string) => Tag | undefined;
   createTag: (name: string) => void;
+  removeTag: (id: string) => boolean;
+  updateTag: TagListModel['update'];
 }
