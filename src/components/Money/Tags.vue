@@ -15,15 +15,21 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component, Prop} from 'vue-property-decorator';
+import {Component} from 'vue-property-decorator';
 
 @Component({
   computed: {
-    tagList() {return []}
+    tagList() {
+      return this.$store.state.tagList;
+    }
   }
 })
 export default class Tags extends Vue {
   selectedTags: string[] = [];
+
+  created() {
+    this.$store.commit('fetchTags');
+  }
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   toggle(tag: string) {
@@ -43,7 +49,7 @@ export default class Tags extends Vue {
     if (!name) {
       return window.alert('标签名不能为空');
     }
-    // store.createTag(name);
+    this.$store.commit('createTag', name);
   }
 }
 </script>
