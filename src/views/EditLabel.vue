@@ -26,15 +26,18 @@ import FormItem from '@/components/Money/FormItem.vue';
 import Button from '@/components/Button.vue';
 
 @Component({
-  components: {Button, FormItem}
+  components: {Button, FormItem},
+  computed: {
+    tag() {
+      return this.$store.state.currentTag;
+    }
+  }
 })
 export default class EditLabel extends Vue {
-  // eslint-disable-next-line no-undef
-  tag?: Tag = undefined;
-
   created() {
-    // TODO
-    //this.tag = store.findTag(this.$route.params.id);
+    const id = this.$route.params.id;
+    this.$store.commit('fetchTags', id);
+    this.$store.commit('setCurrentTag', id);
     if (!this.tag) {
       this.$router.replace('/404');
     }
@@ -42,20 +45,13 @@ export default class EditLabel extends Vue {
 
   update(name: string) {
     if (this.tag) {
-      // TODO
-      //store.updateTag(this.tag.id, name);
+      this.$store.commit('updateTag', {id: this.tag.id, name});
     }
   }
 
-  remove(id: string) {
+  remove() {
     if (this.tag) {
-      // TODO
-      return
-      /*if (store.removeTag(this.tag.id)) {
-        this.$router.replace('/labels');
-      } else {
-        alert('删除失败');
-      }*/
+      this.$store.commit('removeTag', this.tag.id)
     }
   }
 
