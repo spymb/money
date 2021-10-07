@@ -16,11 +16,13 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component, Prop} from 'vue-property-decorator';
-import store from '@/store/index2';
 
-@Component
+@Component({
+  computed: {
+    tagList() {return []}
+  }
+})
 export default class Tags extends Vue {
-  tagList = store.fetchTags();
   selectedTags: string[] = [];
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -41,8 +43,7 @@ export default class Tags extends Vue {
     if (!name) {
       return window.alert('标签名不能为空');
     }
-    store.createTag(name);
-    console.log(this.tagList);
+    // store.createTag(name);
   }
 }
 </script>

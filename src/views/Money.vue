@@ -17,15 +17,14 @@ import Types from '@/components/Money/Types.vue';
 import Tags from '@/components/Money/Tags.vue';
 import {Component} from 'vue-property-decorator';
 import FormItem from '@/components/Money/FormItem.vue';
-import store from '@/store/index2.ts';
 
 @Component({
   components: {FormItem, Tags, Types, Calculator},
+  computed: {
+    //recordList() {}
+  }
 })
 export default class Money extends Vue {
-  recordList = store.recordList;
-  // 用声明的Record类型收集各组件数据，首先设置默认值
-  // 一开始什么都没收集当然应该为空啦
   // eslint-disable-next-line no-undef
   record: RecordItem = {
     tags: [],
@@ -34,13 +33,17 @@ export default class Money extends Vue {
     amount: 0,
   };
 
+  created() {
+    this.$store.commit('fetchRecords');
+  }
+
   // 下面的回调函数表示组件数据更新时，把更新的数据存入record
   onUpdateNotes(value: string) {
     this.record.notes = value;
   }
 
   saveRecord() {
-    store.createRecord(this.record);
+    this.$store.commit('createRecord', this.record);
   }
 
 }
