@@ -6,7 +6,7 @@
     <div class="notes">
       <FormItem field-name="备注" placeholder="在此输入" @update:value="onUpdateNotes"/>
     </div>
-    <Tags :data-source.sync="tags" @update:value="onUpdateTags"/>
+    <Tags/>
   </Layout>
 </template>
 
@@ -23,7 +23,6 @@ import store from '@/store/index2.ts';
   components: {FormItem, Tags, Types, Calculator},
 })
 export default class Money extends Vue {
-  tags = store.tagList;
   recordList = store.recordList;
   // 用声明的Record类型收集各组件数据，首先设置默认值
   // 一开始什么都没收集当然应该为空啦
@@ -38,10 +37,6 @@ export default class Money extends Vue {
   // 下面的回调函数表示组件数据更新时，把更新的数据存入record
   onUpdateNotes(value: string) {
     this.record.notes = value;
-  }
-
-  onUpdateTags(value: string[]) {
-    this.record.tags = value;
   }
 
   saveRecord() {
