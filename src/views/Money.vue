@@ -13,7 +13,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import Calculator from '@/components/Money/Calculator.vue';
-import Types from '@/components/Money/Types.vue';
 import Tags from '@/components/Money/Tags.vue';
 import {Component} from 'vue-property-decorator';
 import FormItem from '@/components/Money/FormItem.vue';
@@ -21,7 +20,7 @@ import typeList from '@/constants/typeList';
 import Tabs from '@/components/Tabs.vue';
 
 @Component({
-  components: {Tabs, FormItem, Tags, Types, Calculator},
+  components: {Tabs, FormItem, Tags, Calculator},
   computed: {
     //recordList() {}
   }
