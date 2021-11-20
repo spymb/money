@@ -2,7 +2,7 @@
   <Layout class-prefix="xxx">
     <!-- 监听各组件的更新事件，如事件被触发就执行对应的回调函数 -->
     <Calculator :value.sync="record.amount" @submit="saveRecord"/>
-    <Types :value.sync="record.type"/>
+    <Tabs :data-source="typeList" :value.sync="record.type" />
     <div class="notes">
       <FormItem field-name="备注" placeholder="在此输入" @update:value="onUpdateNotes"/>
     </div>
@@ -17,14 +17,17 @@ import Types from '@/components/Money/Types.vue';
 import Tags from '@/components/Money/Tags.vue';
 import {Component} from 'vue-property-decorator';
 import FormItem from '@/components/Money/FormItem.vue';
+import typeList from '@/constants/typeList';
+import Tabs from '@/components/Tabs.vue';
 
 @Component({
-  components: {FormItem, Tags, Types, Calculator},
+  components: {Tabs, FormItem, Tags, Types, Calculator},
   computed: {
     //recordList() {}
   }
 })
 export default class Money extends Vue {
+  typeList = typeList;
   // eslint-disable-next-line no-undef
   record: RecordItem = {
     tags: [],
