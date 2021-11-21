@@ -51,12 +51,12 @@ export default class Money extends Vue {
 }
 </script>
 
-<style lang="scss">
-.notes {
+<style lang="scss" scoped>
+ .notes {
   padding: 12px 0;
 }
 
-.xxx-content {
+ ::v-deep .xxx-content {
   display: flex;
   flex-direction: column-reverse;
 }
