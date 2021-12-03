@@ -79,6 +79,10 @@ export default class Statistics extends Vue {
     return result;
   }
 
+  beforeCreate() {
+    this.$store.commit('fetchRecords');
+  }
+
   type = '-';
   typeList = typeList;
 }
