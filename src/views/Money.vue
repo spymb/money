@@ -2,11 +2,11 @@
   <Layout class-prefix="xxx">
     <!-- 监听各组件的更新事件，如事件被触发就执行对应的回调函数 -->
     <Calculator :value.sync="record.amount" @submit="saveRecord"/>
-    <Tabs :data-source="typeList" :value.sync="record.type" />
+    <Tabs :data-source="typeList" :value.sync="record.type"/>
     <div class="notes">
-      <FormItem field-name="备注" placeholder="在此输入" @update:value="onUpdateNotes"/>
+      <FormItem :value.sync="record.notes" field-name="备注" placeholder="在此输入" @update:value="onUpdateNotes"/>
     </div>
-    <Tags/>
+    <Tags @update:value="record.tags = $event"/>
   </Layout>
 </template>
 
@@ -45,18 +45,22 @@ export default class Money extends Vue {
   }
 
   saveRecord() {
+    if (!this.record.tags || this.record.tags.length === 0) {
+      return window.alert('请至少选择一个标签');
+    }
     this.$store.commit('createRecord', this.record);
+    this.record.notes = '';
   }
 
 }
 </script>
 
 <style lang="scss" scoped>
- .notes {
+.notes {
   padding: 12px 0;
 }
 
- ::v-deep .xxx-content {
+::v-deep .xxx-content {
   display: flex;
   flex-direction: column-reverse;
 }
