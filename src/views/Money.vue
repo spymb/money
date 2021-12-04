@@ -20,10 +20,7 @@ import typeList from '@/constants/typeList';
 import Tabs from '@/components/Tabs.vue';
 
 @Component({
-  components: {Tabs, FormItem, Tags, Calculator},
-  computed: {
-    //recordList() {}
-  }
+  components: {Tabs, FormItem, Tags, Calculator}
 })
 export default class Money extends Vue {
   typeList = typeList;
