@@ -6,7 +6,7 @@
       <FormItem :value.sync="record.notes" field-name="备注" placeholder="在此输入" @update:value="onUpdateNotes"/>
     </div>
 
-    <Tags @update:value="record.tags = $event" :type="record.type"/>
+    <Tags :value1.sync="record.id" :type="record.type"/>
 
     <div class="in-out">
       <Tabs :data-source="typeList" :value.sync="record.type"/>
@@ -30,7 +30,7 @@ import {RecordItem, Tag} from '@/store';
 export default class Money extends Vue {
   typeList = typeList;
   record: RecordItem = {
-    tags: [],
+    id: '',
     notes: '',
     type: '-',
     amount: 0,
