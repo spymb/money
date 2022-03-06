@@ -7,13 +7,13 @@ import router from '@/router';
 Vue.use(Vuex);
 
 
-type Tag = {
+export type Tag = {
   id: string;
   name: string;
   icon: string;
   type: '+' | '-';
 }
-type RecordItem = {
+export type RecordItem = {
   tags: Tag[];
   notes: string;
   type: string;
