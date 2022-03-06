@@ -1,15 +1,15 @@
 <template>
   <div class="tags">
-    <div class="new">
-      <button @click="createTag">新增标签</button>
-    </div>
-
-    <ul class="current">
+    <ol class="current">
       <li v-for="tag in tagsByType" :key="tag.id"
           :class="{selected: selectedTags.indexOf(tag) >= 0}"
-          @click="toggle(tag)"> {{ tag.name }}
+          @click="toggle(tag)">
+        <div>
+          <Icon :name="tag.icon"/>
+        </div>
+        <span>{{ tag.name }}</span>
       </li>
-    </ul>
+    </ol>
   </div>
 </template>
 
@@ -27,16 +27,14 @@ import {Tag} from '@/store';
   }
 })
 export default class Tags extends mixins(TagHelper) {
-  @Prop() readonly type!: '-'|'+';
+  @Prop() readonly type!: '-' | '+';
 
   created() {
     this.$store.commit('fetchTags');
   }
-
   get tagsByType() {
-    return this.$store.state.tagList.filter((tag: Tag) => tag.type === this.type)
+    return this.$store.state.tagList.filter((tag: Tag) => tag.type === this.type);
   }
-
   selectedTags: string[] = [];
   toggle(tag: string) {
     const index = this.selectedTags.indexOf(tag);
@@ -45,51 +43,69 @@ export default class Tags extends mixins(TagHelper) {
     } else {
       this.selectedTags.push(tag);
     }
-    // toggle标签时触发更新事件，并将this.selectedTags作为参数传给事件被触发时执行的回调函数
     this.$emit('update:value', this.selectedTags);
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@import "src/assets/style/helper";
+
 .tags {
-  background: white;
-  display: flex;
-  flex-direction: column-reverse;
-  flex-grow: 1;
-  font-size: 14px;
-  padding: 16px;
+  font-size: 12px;
+  flex: 5;
+  overflow: auto;
 
-  > .current {
-    display: flex;
-    flex-wrap: wrap;
-    $bg: #d9d9d9;
-
-    > li {
-      height: 24px;
-      line-height: 24px;
-      border-radius: 12px;
-      background: $bg;
-      padding: 0 16px;
-      margin-right: 12px;
-      margin-top: 4px;
-
-      &.selected {
-        background: darken($bg, 30%);
-        color: white;
-      }
-    }
+  ::-webkit-scrollbar {
+    display: none;
   }
 
-  > .new {
-    padding-top: 16px;
+  > ol {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 4px 0;
 
-    button {
-      background: transparent;
-      border: none;
-      color: #999;
-      border-bottom: 1px solid;
-      padding: 0 4px;
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    > li {
+      width: 20%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 4px 0;
+      cursor: pointer;
+
+      > div {
+        width: 70%;
+        height: 45px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .icon {
+          width: 32px;
+          height: 32px;
+        }
+      }
+
+      > span {
+        margin-top: 3px;
+      }
+
+      &.selected {
+        color: $mainColor;
+
+        > div {
+          background: #E8F1FF;
+
+          .icon {
+            fill: $mainColor;
+          }
+        }
+      }
     }
   }
 }
