@@ -11,17 +11,8 @@ type RecordItem = {
   createdAt?: string;
 }
 type Tag = {
-  id: string
-  name: string
-}
-type TagListModel = {
-  data: Tag[]
-  fetch: () => Tag[]
-  create: (name: string) => 'success' | 'duplicated' // 联合类型
-  update: (id: string, name: string) => 'success' | 'duplicated' | 'not found'
-  remove: (id: string) => boolean
-  save: () => void
-}
-
-interface Window {
+  id: string;
+  name: string;
+  icon: string;
+  type: '+' | '-';
 }

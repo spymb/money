@@ -1,6 +1,5 @@
 <template>
   <Layout class-prefix="xxx">
-    <!-- 监听各组件的更新事件，如事件被触发就执行对应的回调函数 -->
     <Calculator :value.sync="record.amount" @submit="saveRecord"/>
 
     <div class="notes">
@@ -58,6 +57,7 @@ export default class Money extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import "src/assets/style/helper";
 ::v-deep .in-out {
   .tabs {
     box-shadow: inset 0 -5px 5px -5px rgba(0, 0, 0, 0.25),
@@ -71,7 +71,7 @@ export default class Money extends Vue {
       padding: 16px 0;
 
       &.selected {
-        background: #42a5f5;
+        background: $mainColor;
         color: white;
       }
     }

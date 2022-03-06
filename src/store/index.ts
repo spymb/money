@@ -6,10 +6,30 @@ import router from '@/router';
 
 Vue.use(Vuex);
 
+
+type Tag = {
+  id: string;
+  name: string;
+  icon: string;
+  type: '+' | '-';
+}
+type RecordItem = {
+  tags: Tag[];
+  notes: string;
+  type: string;
+  amount: number;
+  createdAt?: string;
+}
+type RootState = {
+  recordList: RecordItem[],
+  tagList: Tag[],
+  currentTag?: Tag
+}
+
 const store = new Vuex.Store({
   state: {
-    recordList: [],
-    tagList: [],
+    recordList: [] as RecordItem[],
+    tagList: [] as Tag[],
     currentTag: undefined,
   } as RootState,
 
@@ -30,24 +50,29 @@ const store = new Vuex.Store({
     fetchTags(state) {
       state.tagList = JSON.parse(window.localStorage.getItem('tagList') || '[]');
       if (!state.tagList || state.tagList.length === 0) {
-        store.commit('createTag', '衣');
-        store.commit('createTag', '食');
-        store.commit('createTag', '住');
-        store.commit('createTag', '行');
+        store.commit('createTag', {name: '餐饮', icon: 'canyin', type: '-'});
+        store.commit('createTag', {name: '服饰', icon: 'fushi', type: '-'});
+        store.commit('createTag', {name: '读书', icon: 'dushu', type: '-'});
+        store.commit('createTag', {name: '交通', icon: 'jiaotong', type: '-'});
+        store.commit('createTag', {name: '旅行', icon: 'lvxing', type: '-'});
+        store.commit('createTag', {name: '日用', icon: 'riyongpin', type: '-'});
+        store.commit('createTag', {name: '工资', icon: 'gongzi', type: '+'});
+        store.commit('createTag', {name: '兼职', icon: 'jianzhi', type: '+'});
+        store.commit('createTag', {name: '理财', icon: 'licai', type: '+'});
       }
     },
     saveTags(state) {
       window.localStorage.setItem('tagList', JSON.stringify(state.tagList));
     },
-    createTag(state, name: string) {
-      const names = state.tagList.map(item => item.name);
-      if (names.indexOf(name) >= 0) {
-        return window.alert('标签名重复');
-      }
+
+    createTag(state, {name, icon, type}: {
+      name: string, icon: string, type: '-' | '+'
+    }) {
       const id = createID().toString();
-      state.tagList.push({id, name: name});
+      state.tagList.push({id, name, icon, type,});
       store.commit('saveTags');
     },
+
     removeTag(state, id: string) {
       let index = -1;
       for (let i = 0; i < state.tagList.length; i++) {
