@@ -4,7 +4,9 @@
       <Icon :name="icon"/>
     </span>
 
-    <input class="nameInput" type="text" :placeholder="tagName">
+    <input type="text"
+           @blur="changeTagName(tagID, $event.target.value)"
+           :placeholder="tagName" class="nameInput"/>
   </label>
 </template>
 
@@ -15,6 +17,11 @@ import {Component, Prop} from 'vue-property-decorator';
 export default class NameTag extends Vue {
   @Prop() readonly icon!: string;
   @Prop() readonly tagName!: string;
+  @Prop() readonly tagID!: string;
+
+  changeTagName(id: string, name: string) {
+    this.$store.commit('updateTag', {id, name})
+  }
 }
 </script>
 

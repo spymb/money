@@ -6,9 +6,12 @@
       <Icon/>
     </header>
 
-    <NameTag :tag-name="selectedTagName" :icon="selectedIcon"/>
+    <NameTag :tag-i-d="selectedTagID" :tag-name="selectedTagName" :icon="selectedIcon"/>
 
-    <Tags :type="money" :last-one="lastOne" :value2.sync="selectedIcon" :value3.sync="selectedTagName"/>
+    <Tags :type="moneyType" :last-one="lastOne"
+          :value1.sync="selectedTagID"
+          :value2.sync="selectedIcon"
+          :value3.sync="selectedTagName"/>
   </Layout>
 </template>
 
@@ -25,6 +28,7 @@ import NameTag from '@/views/money/NameTag.vue';
 })
 export default class setTag extends Vue {
   lastOne = ['tianjia', '添加'];
+  selectedTagID = '';
   selectedIcon = 'tag';
   selectedTagName = '更改标签名';
 
@@ -32,7 +36,7 @@ export default class setTag extends Vue {
     router.back();
   }
 
-  money = this.$route.params.id;
+  moneyType = this.$route.params.id;
 
   getType() {
     return this.money === '-' ? '支出' : '收入';
