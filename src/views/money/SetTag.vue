@@ -6,7 +6,9 @@
       <Icon/>
     </header>
 
-    <Tags :type="money" :last-one="lastOne" :multiple="true"/>
+    <NameTag/>
+
+    <Tags :type="money" :last-one="lastOne" />
   </Layout>
 </template>
 
@@ -15,13 +17,15 @@ import Vue from 'vue';
 import Tags from '@/components/Money/Tags.vue';
 import {Component} from 'vue-property-decorator';
 import router from '@/router';
+import NameTag from '@/views/money/NameTag.vue';
 
 @Component({
-  components: {Tags},
+  components: {NameTag, Tags},
   Tags
 })
 export default class setTag extends Vue {
-  lastOne = ['tianjia', '添加']
+  lastOne = ['tianjia', '添加'];
+
   goBack() {
     router.back();
   }

@@ -2,8 +2,8 @@
   <div class="tags">
     <ol>
       <li v-for="tag in tagsByType" :key="tag.id"
-          :class="handleActiveClass(multiple, tag.id)"
-          @click="handleToggles(multiple, tag.id)">
+          :class="{selected: tag.id === selectedTagID}"
+          @click="onToggleTag(tag.id)">
         <div>
           <Icon :name="tag.icon"/>
         </div>
@@ -36,7 +36,6 @@ import {Tag} from '@/store';
 export default class Tags extends mixins(TagHelper) {
   @Prop() readonly type!: '-' | '+';
   @Prop() readonly lastOne!: [];
-  @Prop() readonly multiple?: boolean;
 
   created() {
     this.$store.commit('fetchTags');
@@ -44,37 +43,6 @@ export default class Tags extends mixins(TagHelper) {
 
   get tagsByType() {
     return this.$store.state.tagList.filter((tag: Tag) => tag.type === this.type);
-  }
-
-  handleActiveClass(multiple: boolean, tagID: string) {
-    if (multiple) {
-      if (this.selectedTagIDs.indexOf(tagID) >= 0) {
-        return 'selected';
-      }
-    } else {
-      if (tagID === this.selectedTagID) {
-        return 'selected';
-      }
-    }
-  }
-
-  handleToggles(multiple: boolean, tagID: string) {
-    if (multiple) {
-      this.onToggleTags(tagID);
-    } else {
-      this.onToggleTag(tagID);
-    }
-  }
-
-  selectedTagIDs: string[] = [];
-
-  onToggleTags(tagID: string) {
-    const index = this.selectedTagIDs.indexOf(tagID);
-    if (index >= 0) {
-      this.selectedTagIDs.splice(index, 1);
-    } else {
-      this.selectedTagIDs.push(tagID);
-    }
   }
 
   selectedTagID = '';
