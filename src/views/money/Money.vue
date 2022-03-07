@@ -6,7 +6,7 @@
       <FormItem :value.sync="record.notes" field-name="备注" placeholder="在此输入" @update:value="onUpdateNotes"/>
     </div>
 
-    <Tags :value1.sync="record.id" :type="record.type" :last-one="lastOne"/>
+    <Tags :value.sync="record.tagID" :type="record.type" :last-one="lastOne" />
 
     <div class="in-out">
       <Tabs :data-source="typeList" :value.sync="record.type"/>
@@ -46,7 +46,7 @@ export default class Money extends Vue {
   }
 
   saveRecord() {
-    if (this.record.id === '') {
+    if (this.record.tagID === '') {
       return window.alert('请选择标签');
     }
     this.$store.commit('createRecord', this.record);

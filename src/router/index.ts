@@ -20,7 +20,7 @@ const routes: Array<RouteConfig> = [
     component: Money
   },
   {
-    path: '/setTag',
+    path: '/setTag/:id',
     component: SetTag
   },
   {

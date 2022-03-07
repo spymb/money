@@ -2,19 +2,19 @@
   <div class="tags">
     <ol>
       <li v-for="tag in tagsByType" :key="tag.id"
-          :class="{selected: tag.id === selectedTagID}"
-          @click="onToggleTag(tag.id)">
+          :class="handleActiveClass(multiple, tag.id)"
+          @click="handleToggles(multiple, tag.id)">
         <div>
           <Icon :name="tag.icon"/>
         </div>
         <span>{{ tag.name }}</span>
       </li>
 
-      <router-link to="/setTag">
+      <router-link :to="`/setTag/${type}`">
         <div>
           <Icon :name="lastOne[0]"/>
         </div>
-        <span>{{lastOne[1]}}</span>
+        <span>{{ lastOne[1] }}</span>
       </router-link>
     </ol>
   </div>
@@ -36,6 +36,7 @@ import {Tag} from '@/store';
 export default class Tags extends mixins(TagHelper) {
   @Prop() readonly type!: '-' | '+';
   @Prop() readonly lastOne!: [];
+  @Prop() readonly multiple?: boolean;
 
   created() {
     this.$store.commit('fetchTags');
@@ -45,23 +46,42 @@ export default class Tags extends mixins(TagHelper) {
     return this.$store.state.tagList.filter((tag: Tag) => tag.type === this.type);
   }
 
-  selectedTags: string[] = [];
-
-  toggle(tag: string) {
-    const index = this.selectedTags.indexOf(tag);
-    if (index >= 0) {
-      this.selectedTags.splice(index, 1);
+  handleActiveClass(multiple: boolean, tagID: string) {
+    if (multiple) {
+      if (this.selectedTagIDs.indexOf(tagID) >= 0) {
+        return 'selected';
+      }
     } else {
-      this.selectedTags.push(tag);
+      if (tagID === this.selectedTagID) {
+        return 'selected';
+      }
     }
-    this.$emit('update:value', this.selectedTags);
+  }
+
+  handleToggles(multiple: boolean, tagID: string) {
+    if (multiple) {
+      this.onToggleTags(tagID);
+    } else {
+      this.onToggleTag(tagID);
+    }
+  }
+
+  selectedTagIDs: string[] = [];
+
+  onToggleTags(tagID: string) {
+    const index = this.selectedTagIDs.indexOf(tagID);
+    if (index >= 0) {
+      this.selectedTagIDs.splice(index, 1);
+    } else {
+      this.selectedTagIDs.push(tagID);
+    }
   }
 
   selectedTagID = '';
 
   onToggleTag(tagID: string) {
     this.selectedTagID = tagID !== this.selectedTagID ? tagID : '';
-    this.$emit('update:value1', this.selectedTagID);
+    this.$emit('update:value', this.selectedTagID);
   }
 }
 </script>
