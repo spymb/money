@@ -13,6 +13,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component, Prop} from 'vue-property-decorator';
+
 @Component
 export default class NameTag extends Vue {
   @Prop() readonly icon!: string;
@@ -20,7 +21,8 @@ export default class NameTag extends Vue {
   @Prop() readonly tagID!: string;
 
   changeTagName(id: string, name: string) {
-    this.$store.commit('updateTag', {id, name})
+    this.$store.commit('updateTag', {id, name});
+    window.location.reload();
   }
 }
 </script>

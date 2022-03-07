@@ -12,6 +12,11 @@
           :value1.sync="selectedTagID"
           :value2.sync="selectedIcon"
           :value3.sync="selectedTagName"/>
+
+    <div class="center">
+      <div class="space"/>
+      <button class="btn" @click="deleteTag">删除标签</button>
+    </div>
   </Layout>
 </template>
 
@@ -31,6 +36,10 @@ export default class setTag extends Vue {
   selectedTagID = '';
   selectedIcon = 'tag';
   selectedTagName = '更改标签名';
+
+  deleteTag() {
+    this.$store.commit('removeTag', this.selectedTagID);
+  }
 
   goBack() {
     router.back();
@@ -59,6 +68,26 @@ export default class setTag extends Vue {
 
   > .icon {
     fill: white;
+  }
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  > .space {
+    height: 16px;
+  }
+
+  > .btn {
+    font-size: 18px;
+    border: none;
+    padding: 8px 12px;
+    background: $mainColor;
+    border-radius: 4px;
+    color: white;
   }
 }
 </style>
