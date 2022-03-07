@@ -9,6 +9,13 @@
         </div>
         <span>{{ tag.name }}</span>
       </li>
+
+      <router-link to="/setTag">
+        <div>
+          <Icon :name="lastOne[0]"/>
+        </div>
+        <span>{{lastOne[1]}}</span>
+      </router-link>
     </ol>
   </div>
 </template>
@@ -28,6 +35,7 @@ import {Tag} from '@/store';
 })
 export default class Tags extends mixins(TagHelper) {
   @Prop() readonly type!: '-' | '+';
+  @Prop() readonly lastOne!: [];
 
   created() {
     this.$store.commit('fetchTags');
@@ -115,6 +123,33 @@ export default class Tags extends mixins(TagHelper) {
             fill: $mainColor;
           }
         }
+      }
+    }
+
+    > a {
+      width: 20%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 4px 0;
+      cursor: pointer;
+
+      > div {
+        width: 70%;
+        height: 45px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .icon {
+          width: 32px;
+          height: 32px;
+        }
+      }
+
+      > span {
+        margin-top: 3px;
       }
     }
   }

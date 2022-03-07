@@ -6,7 +6,7 @@
       <FormItem :value.sync="record.notes" field-name="备注" placeholder="在此输入" @update:value="onUpdateNotes"/>
     </div>
 
-    <Tags :value1.sync="record.id" :type="record.type"/>
+    <Tags :value1.sync="record.id" :type="record.type" :last-one="lastOne"/>
 
     <div class="in-out">
       <Tabs :data-source="typeList" :value.sync="record.type"/>
@@ -30,24 +30,24 @@ import {RecordItem, Tag} from '@/store';
 export default class Money extends Vue {
   typeList = typeList;
   record: RecordItem = {
-    id: '',
+    tagID: '',
     notes: '',
     type: '-',
     amount: 0,
   };
+  lastOne = ['settings', '设置']
 
   created() {
     this.$store.commit('fetchRecords');
   }
-
 
   onUpdateNotes(value: string) {
     this.record.notes = value;
   }
 
   saveRecord() {
-    if (!this.record.tags || this.record.tags.length === 0) {
-      return window.alert('请至少选择一个标签');
+    if (this.record.id === '') {
+      return window.alert('请选择标签');
     }
     this.$store.commit('createRecord', this.record);
     this.record.notes = '';
