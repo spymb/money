@@ -10,7 +10,14 @@
         <span>{{ tag.name }}</span>
       </li>
 
-      <router-link :to="`/setTag/${type}`">
+      <router-link  v-if="lastOne[0]==='settings'" :to="`/setTag/${type}`">
+        <div>
+          <Icon :name="lastOne[0]"/>
+        </div>
+        <span>{{ lastOne[1] }}</span>
+      </router-link>
+
+      <router-link  v-if="lastOne[0]==='tianjia'" :to="`/addTag/${type}`">
         <div>
           <Icon :name="lastOne[0]"/>
         </div>

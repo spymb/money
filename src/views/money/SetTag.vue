@@ -48,7 +48,7 @@ export default class setTag extends Vue {
   moneyType = this.$route.params.id;
 
   getType() {
-    return this.money === '-' ? '支出' : '收入';
+    return this.moneyType === '-' ? '支出' : '收入';
   }
 }
 </script>
