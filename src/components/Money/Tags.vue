@@ -2,8 +2,8 @@
   <div class="tags">
     <ol>
       <li v-for="tag in tagsByType" :key="tag.id"
-          :class="{selected: tag.id === selectedTag.id}"
-          @click="onToggleTag(tag)">
+          :class="{selected: tag.id === selectedTagID}"
+          @click="onToggleTag(tag.id)">
         <div>
           <Icon :name="tag.icon"/>
         </div>
@@ -45,13 +45,11 @@ export default class Tags extends mixins(TagHelper) {
     return this.$store.state.tagList.filter((tag: Tag) => tag.type === this.type);
   }
 
-  selectedTag = {};
+  selectedTagID = '';
 
-  onToggleTag(tag: {id: string, name: string, icon: string, type: '-'|'+'}) {
-    this.selectedTag = tag !== this.selectedTag ? tag : {};
-    this.$emit('update:value1', this.selectedTag.id);
-    this.$emit('update:value2', this.selectedTag.icon);
-    this.$emit('update:value3', this.selectedTag.name);
+  onToggleTag(tagID: string) {
+    this.selectedTagID = tagID !== this.selectedTagID ? tagID : '';
+    this.$emit('update:value', this.selectedTagID);
   }
 }
 </script>
