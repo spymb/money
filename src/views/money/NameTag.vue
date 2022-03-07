@@ -1,19 +1,20 @@
 <template>
   <label class="wrapper">
     <span class="iconWrapper">
-      <Icon name="tag"/>
+      <Icon :name="icon"/>
     </span>
 
-    <input class="nameInput" type="text" placeholder="更改标签名">
+    <input class="nameInput" type="text" :placeholder="tagName">
   </label>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
+import {Component, Prop} from 'vue-property-decorator';
 @Component
 export default class NameTag extends Vue {
-
+  @Prop() readonly icon!: string;
+  @Prop() readonly tagName!: string;
 }
 </script>
 

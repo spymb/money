@@ -6,9 +6,9 @@
       <Icon/>
     </header>
 
-    <NameTag/>
+    <NameTag :icon="selectedIcon" :tag-name="selectedTagName"/>
 
-    <Tags :type="money" :last-one="lastOne" />
+    <Tags :type="money" :last-one="lastOne" :value2.sync="selectedIcon" :value3.sync="selectedTagName"/>
   </Layout>
 </template>
 
@@ -25,6 +25,8 @@ import NameTag from '@/views/money/NameTag.vue';
 })
 export default class setTag extends Vue {
   lastOne = ['tianjia', '添加'];
+  selectedIcon = 'tag';
+  selectedTagName = '更改标签名';
 
   goBack() {
     router.back();

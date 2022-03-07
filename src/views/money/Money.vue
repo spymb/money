@@ -6,7 +6,7 @@
       <FormItem :value.sync="record.notes" field-name="备注" placeholder="在此输入" @update:value="onUpdateNotes"/>
     </div>
 
-    <Tags :value.sync="record.tagID" :type="record.type" :last-one="lastOne" />
+    <Tags :value1.sync="record.tagID" :type="record.type" :last-one="lastOne" />
 
     <div class="in-out">
       <Tabs :data-source="typeList" :value.sync="record.type"/>
