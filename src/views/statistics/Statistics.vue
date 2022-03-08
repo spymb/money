@@ -8,6 +8,10 @@
       {{ dateStr }}&#9660;
     </div>
 
+    <div class="moneyTypeSelector">
+      <Tabs :data-source="moneyTypes" :value.sync="selectedMoneyType"/>
+    </div>
+
     <pop-up v-model="showDatePicker" position="bottom">
       <DatePicker :type="selectedDateType" v-model="selectedTime" @ok="showDatePicker = !showDatePicker"/>
     </pop-up>
@@ -31,6 +35,11 @@ export default class Statistics extends Vue {
     {text: '年', value: 'year'},
   ];
   selectedDateType = 'year-month';
+  moneyTypes = [
+    {text: '支出', value: '-'},
+    {text: '收入', value: '+'},
+  ];
+  selectedMoneyType = '-';
   selectedTime = new Date();
   showDatePicker = false;
 
@@ -46,6 +55,27 @@ export default class Statistics extends Vue {
 
 <style lang="scss" scoped>
 @import "src/assets/style/helper";
+::v-deep .moneyTypeSelector {
+  margin-top: 10px;
+  .tabs {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 0 120px;
+    &-item {
+      font-size: 12px;
+      border-radius: 5px;
+      border: 1px solid #cccccc;
+      width: 25%;
+      text-align: center;
+      padding: 3px 3px;
+
+      &.selected {
+        background: $mainColor;
+        color: white;
+      }
+    }
+  }
+}
 .dateSelector {
   box-shadow: inset 0 -5px 5px -5px rgba(0, 0, 0, 0.25);
   background: white;
