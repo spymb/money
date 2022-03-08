@@ -1,13 +1,11 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
-//import Home from '@/views/Home.vue'
 import Money from '@/views/money/Money.vue'
 import SetTag from '@/views/money/SetTag.vue'
-import Labels from '@/views/Labels.vue'
-import Statistics from '@/views/Statistics.vue'
 import NotFound from '@/views/NotFound.vue';
-import EditLabel from '@/views/EditLabel.vue'
 import AddTag from '@/views/money/AddTag.vue';
+import Details from '@/views/details/Details.vue';
+import Statistics from '@/views/statistics/Statistics.vue';
 
 Vue.use(VueRouter)
 
@@ -29,12 +27,8 @@ const routes: Array<RouteConfig> = [
     component: AddTag
   },
   {
-    path: '/labels',
-    component: Labels
-  },
-  {
-    path: '/labels/edit/:id',
-    component: EditLabel
+    path: '/details',
+    component: Details
   },
   {
     path: '/statistics',
