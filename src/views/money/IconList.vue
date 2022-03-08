@@ -21,6 +21,7 @@ export default class IconList extends Vue {
 
   onToggleIcon(icon: string) {
     this.selectedIcon = icon !== this.selectedIcon ? icon : '';
+    this.$emit('update:icon', icon)
   }
 }
 </script>

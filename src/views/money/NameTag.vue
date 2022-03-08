@@ -4,9 +4,12 @@
       <Icon :name="icon"/>
     </span>
 
-    <input type="text"
+    <input v-if="tagID" type="text"
            @blur="changeTagName(tagID, $event.target.value)"
-           :placeholder="tagName" class="nameInput"/>
+           :placeholder="holder" class="nameInput"/>
+    <input v-if="holder==='添加标签名'" type="text"
+           @blur="transName($event.target.value)"
+           :placeholder="holder" class="nameInput"/>
   </label>
 </template>
 
@@ -17,8 +20,12 @@ import {Component, Prop} from 'vue-property-decorator';
 @Component
 export default class NameTag extends Vue {
   @Prop() readonly icon!: string;
-  @Prop() readonly tagName!: string;
+  @Prop() readonly holder!: string;
   @Prop() readonly tagID!: string;
+
+  transName(name: string) {
+    this.$emit('update:name', name);
+  }
 
   changeTagName(id: string, name: string) {
     this.$store.commit('updateTag', {id, name});

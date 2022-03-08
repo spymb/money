@@ -6,7 +6,7 @@
       <Icon/>
     </header>
 
-    <NameTag :tag-i-d="selectedTagID" :tag-name="selectedTagName" :icon="selectedIcon"/>
+    <NameTag :tag-i-d="selectedTagID" :holder="selectedTagName" :icon="selectedIcon"/>
 
     <Tags :type="moneyType" :last-one="lastOne"
           :value1.sync="selectedTagID"
@@ -33,7 +33,7 @@ import NameTag from '@/views/money/NameTag.vue';
 })
 export default class setTag extends Vue {
   lastOne = ['tianjia', '添加'];
-  selectedTagID = '';
+  selectedTagID = '0';
   selectedIcon = 'tag';
   selectedTagName = '更改标签名';
 

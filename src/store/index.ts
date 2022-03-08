@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import clone from '@/lib/clone';
 import createID from '@/lib/createID';
-import router from '@/router';
 
 Vue.use(Vuex);
 
@@ -69,8 +68,13 @@ const store = new Vuex.Store({
       name: string, icon: string, type: '-' | '+'
     }) {
       const id = createID().toString();
-      state.tagList.push({id, name, icon, type,});
-      store.commit('saveTags');
+      if (icon === 'tag') {window.alert('请选择图标');} else {
+        if (name === '') {window.alert('标签名不能为空');} else {
+          state.tagList.push({id, name, icon, type,});
+          store.commit('saveTags');
+          window.location.reload();
+        }
+      }
     },
 
     removeTag(state, id: string) {
@@ -86,7 +90,7 @@ const store = new Vuex.Store({
         store.commit('saveTags');
         window.location.reload();
       } else {
-        alert('删除失败');
+        alert('请选择标签');
       }
     },
     updateTag(state, payload: { id: string, name: string }) {
