@@ -4,6 +4,11 @@
       <Tabs :data-source="dateTypes" :value.sync="selectedDateType"/>
     </div>
 
+    <button @click="showDatePicker=true">showDatePicker</button>
+
+    <pop-up v-model="showDatePicker" position="bottom">
+      <DatePicker type="year-month" v-model="selectedTime" @ok="showDatePicker = !showDatePicker"/>
+    </pop-up>
   </Layout>
 </template>
 
@@ -11,11 +16,26 @@
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import Tabs from '@/components/Tabs.vue';
+import DatePicker from '@/components/date-picker/DatePicker.vue';
+import PopUp from '@/components/date-picker/PopUp.vue';
+import dayjs from 'dayjs';
+import {RecordItem} from '@/store';
 
 @Component({
-  components: {Tabs}
+  components: {PopUp, DatePicker, Tabs}
 })
 export default class Details extends Vue {
+  selectedTime = new Date()
+  showDatePicker = false
+  get selectedMonth() {
+    return dayjs(this.selectedTime).month()
+  }
+  get selectedYear() {
+    return dayjs(this.selectedTime).year()
+  }
+  get selectedRecords() {
+    return this.getRecordsByTime(this.selectedTime, 'month') as RecordItem[]
+  }
   dateTypes = [
     {text: '日', value: 'day'},
     {text: '月', value: 'month'},
