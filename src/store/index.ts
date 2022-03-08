@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import clone from '@/lib/clone';
 import createID from '@/lib/createID';
+import dayjs from 'dayjs';
 
 Vue.use(Vuex);
 
@@ -19,17 +20,17 @@ export type RecordItem = {
   amount: number;
   createdAt?: string;
 }
-type RootState = {
+export type RootState = {
   recordList: RecordItem[],
   tagList: Tag[],
-  currentTag?: Tag
+  recordsByTime: RecordItem[]
 }
 
 const store = new Vuex.Store({
   state: {
     recordList: [] as RecordItem[],
     tagList: [] as Tag[],
-    currentTag: undefined,
+    recordsByTime: [] as RecordItem[],
   } as RootState,
 
   mutations: {
@@ -63,20 +64,20 @@ const store = new Vuex.Store({
     saveTags(state) {
       window.localStorage.setItem('tagList', JSON.stringify(state.tagList));
     },
-
-    createTag(state, {name, icon, type}: {
-      name: string, icon: string, type: '-' | '+'
-    }) {
+    createTag(state, {name, icon, type}: { name: string, icon: string, type: '-' | '+' }) {
       const id = createID().toString();
-      if (icon === 'tag') {window.alert('请选择图标');} else {
-        if (name === '') {window.alert('标签名不能为空');} else {
+      if (icon === 'tag') {
+        window.alert('请选择图标');
+      } else {
+        if (name === '') {
+          window.alert('标签名不能为空');
+        } else {
           state.tagList.push({id, name, icon, type,});
           store.commit('saveTags');
           window.location.reload();
         }
       }
     },
-
     removeTag(state, id: string) {
       let index = -1;
       for (let i = 0; i < state.tagList.length; i++) {
@@ -107,9 +108,6 @@ const store = new Vuex.Store({
         }
       }
     },
-    setCurrentTag(state, id: string) {
-      state.currentTag = state.tagList.filter(t => t.id === id)[0];
-    }
   },
 });
 

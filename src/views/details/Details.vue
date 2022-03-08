@@ -5,8 +5,10 @@
     </div>
 
     <div @click="showDatePicker=true" class="dateSelector">
-      {{dateStr}}
+      {{dateStr}}&#9660;
     </div>
+
+    <RecordList :date="selectedTime" :date-type="selectedDateType"/>
 
     <pop-up v-model="showDatePicker" position="bottom">
       <DatePicker :type="selectedDateType" v-model="selectedTime" @ok="showDatePicker = !showDatePicker"/>
@@ -21,10 +23,10 @@ import Tabs from '@/components/Tabs.vue';
 import DatePicker from '@/components/date-picker/DatePicker.vue';
 import PopUp from '@/components/date-picker/PopUp.vue';
 import dayjs from 'dayjs';
-import {RecordItem} from '@/store';
+import RecordList from '@/views/details/RecordList.vue';
 
 @Component({
-  components: {PopUp, DatePicker, Tabs}
+  components: {RecordList, PopUp, DatePicker, Tabs}
 })
 export default class Details extends Vue {
   dateTypes = [
@@ -41,17 +43,6 @@ export default class Details extends Vue {
     } else {
       return dayjs(this.selectedTime).format('YYYY年M月')
     }
-  }
-  get selectedMonth() {
-    return dayjs(this.selectedTime).month();
-  }
-
-  get selectedYear() {
-    return dayjs(this.selectedTime).year();
-  }
-
-  get selectedRecords() {
-    return this.getRecordsByTime(this.selectedTime, 'month') as RecordItem[];
   }
 }
 </script>
