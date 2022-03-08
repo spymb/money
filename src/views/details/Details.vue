@@ -1,13 +1,15 @@
 <template>
   <Layout class-prefix="yyy">
-    <div class="dateSelector">
+    <div class="dateTypeSelector">
       <Tabs :data-source="dateTypes" :value.sync="selectedDateType"/>
     </div>
 
-    <button @click="showDatePicker=true">showDatePicker</button>
+    <div @click="showDatePicker=true" class="dateSelector">
+      {{dateStr}}
+    </div>
 
     <pop-up v-model="showDatePicker" position="bottom">
-      <DatePicker type="year-month" v-model="selectedTime" @ok="showDatePicker = !showDatePicker"/>
+      <DatePicker :type="selectedDateType" v-model="selectedTime" @ok="showDatePicker = !showDatePicker"/>
     </pop-up>
   </Layout>
 </template>
@@ -25,28 +27,45 @@ import {RecordItem} from '@/store';
   components: {PopUp, DatePicker, Tabs}
 })
 export default class Details extends Vue {
-  selectedTime = new Date()
-  showDatePicker = false
-  get selectedMonth() {
-    return dayjs(this.selectedTime).month()
-  }
-  get selectedYear() {
-    return dayjs(this.selectedTime).year()
-  }
-  get selectedRecords() {
-    return this.getRecordsByTime(this.selectedTime, 'month') as RecordItem[]
-  }
   dateTypes = [
-    {text: '日', value: 'day'},
-    {text: '月', value: 'month'},
+    {text: '日', value: 'full-date'},
+    {text: '月', value: 'year-month'},
   ];
-  selectedDateType = 'day'
+  selectedDateType = 'full-date';
+  selectedTime = new Date();
+  showDatePicker = false;
+
+  get dateStr() {
+    if (this.selectedDateType === 'full-date') {
+      return dayjs(this.selectedTime).format('YYYY年M月D日')
+    } else {
+      return dayjs(this.selectedTime).format('YYYY年M月')
+    }
+  }
+  get selectedMonth() {
+    return dayjs(this.selectedTime).month();
+  }
+
+  get selectedYear() {
+    return dayjs(this.selectedTime).year();
+  }
+
+  get selectedRecords() {
+    return this.getRecordsByTime(this.selectedTime, 'month') as RecordItem[];
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "src/assets/style/helper";
-::v-deep .dateSelector {
+.dateSelector {
+  box-shadow: inset 0 -5px 5px -5px rgba(0, 0, 0, 0.25);
+  background: white;
+  padding: 10px 0;
+  text-align: center;
+  color: $mainColor;
+}
+::v-deep .dateTypeSelector {
   .tabs {
     box-shadow: inset 0 -5px 5px -5px rgba(0, 0, 0, 0.25),
     inset 0 5px 5px -5px rgba(0, 0, 0, 0.25);
