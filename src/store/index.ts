@@ -16,7 +16,7 @@ export type Tag = {
 export type RecordItem = {
   tagID: string;
   notes: string;
-  type: string;
+  type: '+' | '-';
   amount: number;
   createdAt?: string;
 }

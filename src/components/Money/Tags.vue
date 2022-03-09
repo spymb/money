@@ -52,10 +52,10 @@ export default class Tags extends mixins(TagHelper) {
     return this.$store.state.tagList.filter((tag: Tag) => tag.type === this.type);
   }
 
-  selectedTag = {};
+  selectedTag = {id: '', name: '', icon: '', type: '-'};
 
   onToggleTag(tag: {id: string, name: string, icon: string, type: '-'|'+'}) {
-    this.selectedTag = tag !== this.selectedTag ? tag : {};
+    this.selectedTag = tag !== this.selectedTag ? tag : {id: '', name: '', icon: '', type: '-'};
     this.$emit('update:value1', this.selectedTag.id);
     this.$emit('update:value2', this.selectedTag.icon);
     this.$emit('update:value3', this.selectedTag.name);

@@ -36,11 +36,13 @@ import {Component, Prop} from 'vue-property-decorator';
 import dayjs from 'dayjs';
 import {RecordItem, RootState} from '@/store';
 
-@Component()
 export default class Statistics extends Vue {
-  @Prop() readonly date: Date;
-  @Prop() readonly dateType: string;
-  dayType = this.dateType === 'full-date' ? 'date' : 'month';
+  @Prop() readonly date!: Date;
+  @Prop() readonly dateType!: string;
+
+  get dayType() {
+    return this.dateType === 'full-date' ? 'date' : 'month';
+  }
 
   get tagList() {
     return (this.$store.state as RootState).tagList;
@@ -72,7 +74,7 @@ export default class Statistics extends Vue {
 
   get groupedList() {
     const {recordList} = this;
-    const newList = JSON.parse(JSON.stringify(recordList))
+    const newList = (JSON.parse(JSON.stringify(recordList)) as RecordItem[])
         .filter(r => dayjs(r.createdAt).isSame(this.date, this.dayType))
         .sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf());
     if (newList.length === 0) {

@@ -29,7 +29,6 @@ import NameTag from '@/views/money/NameTag.vue';
 
 @Component({
   components: {NameTag, Tags},
-  Tags
 })
 export default class setTag extends Vue {
   lastOne = ['tianjia', '添加'];
