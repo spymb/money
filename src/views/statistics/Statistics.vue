@@ -15,6 +15,8 @@
     <Chart :x-data="xData" :y-data="yData" class="charts" height="200px"
            :date-type="selectedDateType" :money-type="selectedMoneyType"/>
 
+    <RankList :money-type="selectedMoneyType" :date-type="selectedDateType" :cur-date="selectedTime"/>
+
     <pop-up v-model="showDatePicker" position="bottom">
       <DatePicker :type="selectedDateType" v-model="selectedTime" @ok="showDatePicker = !showDatePicker"/>
     </pop-up>
@@ -31,9 +33,10 @@ import dayjs from 'dayjs';
 import {getRecordsByTime} from '@/store/utils';
 import {RecordItem, RootState} from '@/store';
 import Chart from '@/views/statistics/Chart.vue';
+import RankList from '@/views/statistics/RankList.vue';
 
 @Component({
-  components: {Chart, DatePicker, PopUp, Tabs}
+  components: {RankList, Chart, DatePicker, PopUp, Tabs}
 })
 export default class Statistics extends Vue {
   dateTypes = [
