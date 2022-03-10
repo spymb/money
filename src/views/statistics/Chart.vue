@@ -86,7 +86,7 @@ export default class Chart extends Vue {
 
   charts: ECharts | null = null;
 
-  /*mounted() {
+  mounted() {
     const container = this.$refs.charts as HTMLDivElement;
     if (echarts === undefined) {return;}
     this.charts = echarts.init(container);
@@ -96,6 +96,6 @@ export default class Chart extends Vue {
   @Watch('option')
   onOptionUpdate() {
     this.charts?.setOption(this.option);
-  }*/
+  }
 }
 </script>

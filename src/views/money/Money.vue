@@ -79,7 +79,8 @@ export default class Money extends Vue {
 }
 
 .notes {
-  padding: 12px 0;
+  border-top: 1px solid #c4c4c4;
+  padding: 10px 0;
 }
 
 ::v-deep .xxx-content {

@@ -67,6 +67,7 @@ export default class Tags extends mixins(TagHelper) {
 @import "src/assets/style/helper";
 
 .tags {
+  align-items: center;
   font-size: 12px;
   flex: 5;
   overflow: auto;

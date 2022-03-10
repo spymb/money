@@ -4,8 +4,15 @@
       <Tabs :data-source="dateTypes" :value.sync="selectedDateType"/>
     </div>
 
-    <div @click="showDatePicker=true" class="dateSelector">
-      {{ dateStr }}&#9660;
+    <div class="time-money">
+      <div @click="showDatePicker=true" class="time">
+        {{ dateStr }}&#9660;
+      </div>
+
+      <div class="money">
+        <span>支出￥{{ outcome }}</span>
+        <span>收入￥{{ income }}</span>
+      </div>
     </div>
 
     <div class="moneyTypeSelector">
@@ -30,7 +37,7 @@ import Tabs from '@/components/Tabs.vue';
 import PopUp from '@/components/date-picker/PopUp.vue';
 import DatePicker from '@/components/date-picker/DatePicker.vue';
 import dayjs from 'dayjs';
-import {getRecordsByTime} from '@/store/utils';
+import {getRecordsByTime, getSum} from '@/store/utils';
 import {RecordItem, RootState} from '@/store';
 import Chart from '@/views/statistics/Chart.vue';
 import RankList from '@/views/statistics/RankList.vue';
@@ -43,7 +50,7 @@ export default class Statistics extends Vue {
     {text: '月', value: 'year-month'},
     {text: '年', value: 'year'},
   ];
-  selectedDateType = 'year-month';
+  selectedDateType: 'full-date' | 'year-month' | 'year' = 'year-month';
   moneyTypes = [
     {text: '支出', value: '-'},
     {text: '收入', value: '+'},
@@ -51,6 +58,14 @@ export default class Statistics extends Vue {
   selectedMoneyType = '-';
   selectedTime = new Date();
   showDatePicker = false;
+
+  get outcome() {
+    return getSum(this.recordList, '-', this.selectedTime.toISOString(), this.selectedDateType) || 0;
+  }
+
+  get income() {
+    return getSum(this.recordList, '+', this.selectedTime.toISOString(), this.selectedDateType) || 0;
+  }
 
   get recordList() {
     return (this.$store.state as RootState).recordList;
@@ -72,7 +87,7 @@ export default class Statistics extends Vue {
 
   getSumByDates(records: RecordItem[], date: Date) {
     records = getRecordsByTime(records, date, 'month');
-    if (this.dateArr === undefined) {return }
+    if (this.dateArr === undefined) {return; }
     const ret = {
       '+': this.dateArr.map(_ => 0),
       '-': this.dateArr.map(_ => 0)
@@ -85,7 +100,7 @@ export default class Statistics extends Vue {
 
   getSumForMonths(records: RecordItem[], date: Date) {
     records = getRecordsByTime(records, date, 'year');
-    if (this.monthArr === undefined) {return }
+    if (this.monthArr === undefined) {return; }
     const ret = {
       '+': this.monthArr.map(_ => 0),
       '-': this.monthArr.map(_ => 0)
@@ -114,7 +129,22 @@ export default class Statistics extends Vue {
 
 <style lang="scss" scoped>
 @import "src/assets/style/helper";
+.time-money {
+  box-shadow: inset 0 -5px 5px -5px rgba(0, 0, 0, 0.25);
+  background: white;
+  padding: 10px 15px;
+  text-align: center;
+  color: $mainColor;
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
 
+  > .money {
+    > span {
+      margin-left: 10px;
+    }
+  }
+}
 ::v-deep .moneyTypeSelector {
   margin: 10px 0;
 
@@ -139,18 +169,11 @@ export default class Statistics extends Vue {
   }
 }
 
-.dateSelector {
-  box-shadow: inset 0 -5px 5px -5px rgba(0, 0, 0, 0.25);
-  background: white;
-  padding: 10px 0;
-  text-align: center;
-  color: $mainColor;
-}
-
 ::v-deep .dateTypeSelector {
   .charts {
     flex-shrink: 0;
   }
+
   .tabs {
     box-shadow: inset 0 -5px 5px -5px rgba(0, 0, 0, 0.25),
     inset 0 5px 5px -5px rgba(0, 0, 0, 0.25);

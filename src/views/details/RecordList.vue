@@ -1,12 +1,12 @@
 <template>
   <div>
-<!--    <ol v-if="groupedList.length > 0">
+    <ol v-if="groupedList.length > 0">
       <li v-for="(group, index) in groupedList" :key="index">
         <h3 class="title">
           {{ beautify(group.title) }}
           <span class="in-out">
-          <span>支出￥{{ group.total['-'] }}</span>
-          <span>收入￥{{ group.total['+'] }}</span>
+          <span>支出￥{{ group.total['-'] ||0}}</span>
+          <span>收入￥{{ group.total['+'] ||0}}</span>
         </span>
         </h3>
 
@@ -28,9 +28,6 @@
 
     <div v-else class="noResult">
       暂无数据
-    </div>-->
-    <div>
-      {{ recordList }}
     </div>
   </div>
 </template>
@@ -41,8 +38,9 @@ import {Prop} from 'vue-property-decorator';
 import dayjs from 'dayjs';
 import {RecordItem, RootState} from '@/store';
 import clone from '@/lib/clone';
-
-export default class Statistics extends Vue {
+import Component from 'vue-class-component';
+@Component
+export default class RecordList extends Vue {
   @Prop() readonly date!: Date;
   @Prop() readonly dateType!: string;
   @Prop() readonly records!: RecordItem[];
@@ -79,7 +77,7 @@ export default class Statistics extends Vue {
     return (this.$store.state as RootState).recordList;
   }
 
-  /*get groupedList() {
+  get groupedList() {
     const newList = (clone(this.recordList) as RecordItem[])
         .filter(r => dayjs(r.createdAt).isSame(this.date, this.dayType))
         .sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf());
@@ -109,7 +107,7 @@ export default class Statistics extends Vue {
       }, initial);
     });
     return result;
-  }*/
+  }
 
   beforeCreate() {
     this.$store.commit('fetchRecords');
@@ -122,7 +120,9 @@ export default class Statistics extends Vue {
 @import "src/assets/style/helper";
 
 .noResult {
-  padding: 30px;
+  color: #c4c4c4;
+  margin-top: 30px;
+  font-size: 20px;
   text-align: center;
 }
 

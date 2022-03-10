@@ -17,7 +17,6 @@
         <span class="amount">￥{{ item.sum }}</span>
       </li>
     </ol>
-    {{this.recordList}}
   </div>
 </template>
 

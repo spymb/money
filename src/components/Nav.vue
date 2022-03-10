@@ -31,21 +31,23 @@ nav {
   @extend %outerShadow;
 
   > .item {
+    font-size: 10px;
     width: 33.33333%;
-    padding: 2px 0;
+    padding: 4px 0;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    .icon {
+      width: 24px;
+      height: 24px;
+    }
   }
-
-  icon {
-    width: 32px;
-    height: 32px;
-  }
-
   .item.selected {
-    color: $color-highlight;
+    color: $mainColor;
+    .icon {
+      fill: $mainColor;
+    }
   }
 }
 </style>
