@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import clone from '@/lib/clone';
 import createID from '@/lib/createID';
-import dayjs from 'dayjs';
 
 Vue.use(Vuex);
 
@@ -23,14 +22,12 @@ export type RecordItem = {
 export type RootState = {
   recordList: RecordItem[],
   tagList: Tag[],
-  recordsByTime: RecordItem[]
 }
 
 const store = new Vuex.Store({
   state: {
     recordList: [] as RecordItem[],
     tagList: [] as Tag[],
-    recordsByTime: [] as RecordItem[],
   } as RootState,
 
   mutations: {

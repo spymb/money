@@ -1,44 +1,51 @@
 <template>
-  <ol v-if="groupedList.length > 0">
-    <li v-for="(group, index) in groupedList" :key="index">
-      <h3 class="title">
-        {{ beautify(group.title) }}
-        <span class="in-out">
+  <div>
+<!--    <ol v-if="groupedList.length > 0">
+      <li v-for="(group, index) in groupedList" :key="index">
+        <h3 class="title">
+          {{ beautify(group.title) }}
+          <span class="in-out">
           <span>支出￥{{ group.total['-'] }}</span>
           <span>收入￥{{ group.total['+'] }}</span>
         </span>
-      </h3>
+        </h3>
 
-      <ol>
-        <li v-for="item in group.items" :key="item.id" class="record">
-          <div class="tags">
+        <ol>
+          <li v-for="item in group.items" :key="item.id" class="record">
+            <div class="tags">
                 <span class="iconWrapper">
                   <Icon :name="getTag(item.tagID).icon"/>
                 </span>
-            <span>{{ getTag(item.tagID).name }}</span>
-          </div>
+              <span>{{ getTag(item.tagID).name }}</span>
+            </div>
 
-          <span class="notes">{{ item.notes }}</span>
-          <span class="amount">{{ getTag(item.tagID).type }}{{ item.amount }}</span>
-        </li>
-      </ol>
-    </li>
-  </ol>
+            <span class="notes">{{ item.notes }}</span>
+            <span class="amount">{{ getTag(item.tagID).type }}{{ item.amount }}</span>
+          </li>
+        </ol>
+      </li>
+    </ol>
 
-  <div v-else class="noResult">
-    暂无数据
+    <div v-else class="noResult">
+      暂无数据
+    </div>-->
+    <div>
+      {{ recordList }}
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component, Prop} from 'vue-property-decorator';
+import {Prop} from 'vue-property-decorator';
 import dayjs from 'dayjs';
 import {RecordItem, RootState} from '@/store';
+import clone from '@/lib/clone';
 
 export default class Statistics extends Vue {
   @Prop() readonly date!: Date;
   @Prop() readonly dateType!: string;
+  @Prop() readonly records!: RecordItem[];
 
   get dayType() {
     return this.dateType === 'full-date' ? 'date' : 'month';
@@ -72,15 +79,14 @@ export default class Statistics extends Vue {
     return (this.$store.state as RootState).recordList;
   }
 
-  get groupedList() {
-    const {recordList} = this;
-    const newList = (JSON.parse(JSON.stringify(recordList)) as RecordItem[])
+  /*get groupedList() {
+    const newList = (clone(this.recordList) as RecordItem[])
         .filter(r => dayjs(r.createdAt).isSame(this.date, this.dayType))
         .sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf());
     if (newList.length === 0) {
       return [];
     }
-    type Result = { title: string, total?: {type: '-'|'+', amount: number}, items: RecordItem[] }[]
+    type Result = { title: string, total?: { type: '-' | '+', amount: number }, items: RecordItem[] }[]
     const result: Result = [{title: dayjs(newList[0].createdAt).format('YYYY-MM-DD'), items: [newList[0]]}];
     for (let i = 1; i < newList.length; i++) {
       const current = newList[i];
@@ -103,7 +109,7 @@ export default class Statistics extends Vue {
       }, initial);
     });
     return result;
-  }
+  }*/
 
   beforeCreate() {
     this.$store.commit('fetchRecords');
@@ -149,6 +155,7 @@ export default class Statistics extends Vue {
 .title {
   font-size: 16px;
   @extend %item;
+
   > .in-out {
     > span {
       margin-left: 10px;

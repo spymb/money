@@ -3,9 +3,9 @@ import {RecordItem, Tag} from '@/store/index';
 
 const getRecordsByTime = (records: RecordItem[], time: Date, unit: dayjs.UnitType) => {
   return records.filter(record => {
-    return dayjs(time).isSame(record.createdAt, unit)
-  })
-}
+    return dayjs(time).isSame(record.createdAt, unit);
+  });
+};
 const getRecordsByType = (records: RecordItem[], type: '-' | '+') => {
   return records.filter(r => {
     return r.type === type;
@@ -23,4 +23,5 @@ const getSumForTags = (records: RecordItem[]) => {
     return pre;
   }, initial);
 };
-export {getRecordsByTime, getRecordsByType, findTag, getSumForTags}
+
+export {getRecordsByTime, getRecordsByType, findTag, getSumForTags};

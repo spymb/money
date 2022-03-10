@@ -8,7 +8,7 @@
       {{dateStr}}&#9660;
     </div>
 
-    <RecordList :date="selectedTime" :date-type="selectedDateType"/>
+    <RecordList :date="selectedTime" :date-type="selectedDateType" />
 
     <pop-up v-model="showDatePicker" position="bottom">
       <DatePicker :type="selectedDateType" v-model="selectedTime" @ok="showDatePicker = !showDatePicker"/>
@@ -24,6 +24,7 @@ import DatePicker from '@/components/date-picker/DatePicker.vue';
 import PopUp from '@/components/date-picker/PopUp.vue';
 import dayjs from 'dayjs';
 import RecordList from '@/views/details/RecordList.vue';
+import {RootState} from '@/store';
 
 @Component({
   components: {RecordList, PopUp, DatePicker, Tabs}
@@ -44,6 +45,7 @@ export default class Details extends Vue {
       return dayjs(this.selectedTime).format('YYYY年M月')
     }
   }
+
 }
 </script>
 

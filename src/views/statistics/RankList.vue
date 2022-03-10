@@ -17,6 +17,7 @@
         <span class="amount">￥{{ item.sum }}</span>
       </li>
     </ol>
+    {{this.recordList}}
   </div>
 </template>
 
@@ -60,6 +61,11 @@ export default class RankList extends Vue {
         percent: item[1] / total * 100
       };
     });
+  }
+
+  beforeCreate() {
+    this.$store.commit('fetchRecords');
+    this.$store.commit('fetchTags');
   }
 }
 </script>

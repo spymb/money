@@ -28,7 +28,7 @@ export default class Chart extends Vue {
         },
         confine: true,
         position: function (point: any[]) {
-          return [point[0], '30%']
+          return [point[0], '30%'];
         }
       },
       grid: {
@@ -86,9 +86,9 @@ export default class Chart extends Vue {
 
   charts: ECharts | null = null;
 
-  mounted() {
+  /*mounted() {
     const container = this.$refs.charts as HTMLDivElement;
-    if (echarts === undefined) {return}
+    if (echarts === undefined) {return;}
     this.charts = echarts.init(container);
     this.charts.setOption(this.option);
   }
@@ -96,5 +96,6 @@ export default class Chart extends Vue {
   @Watch('option')
   onOptionUpdate() {
     this.charts?.setOption(this.option);
-  }}
+  }*/
+}
 </script>
