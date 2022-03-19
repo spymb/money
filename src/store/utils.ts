@@ -44,6 +44,8 @@ const getSum =
     const holder = {};
     recordsFormatTime.map(r => {
       if (r === undefined) {return; }
+      // eslint-disable-next-line no-prototype-builtins,@typescript-eslint/ban-ts-comment
+      // @ts-ignore
       // eslint-disable-next-line no-prototype-builtins
       if (holder.hasOwnProperty(r.createdAt)) {
         // @ts-ignore

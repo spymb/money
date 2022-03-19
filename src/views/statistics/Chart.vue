@@ -90,11 +90,13 @@ export default class Chart extends Vue {
     const container = this.$refs.charts as HTMLDivElement;
     if (echarts === undefined) {return;}
     this.charts = echarts.init(container);
+    // @ts-ignore
     this.charts.setOption(this.option);
   }
 
   @Watch('option')
   onOptionUpdate() {
+    // @ts-ignore
     this.charts?.setOption(this.option);
   }
 }

@@ -24,7 +24,6 @@ import DatePicker from '@/components/date-picker/DatePicker.vue';
 import PopUp from '@/components/date-picker/PopUp.vue';
 import dayjs from 'dayjs';
 import RecordList from '@/views/details/RecordList.vue';
-import {RootState} from '@/store';
 
 @Component({
   components: {RecordList, PopUp, DatePicker, Tabs}

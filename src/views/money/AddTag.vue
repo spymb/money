@@ -12,6 +12,7 @@
     <div class="center">
       <div class="space"/>
       <button class="btn" @click="addTag">添加标签</button>
+      {{tags}}
     </div>
   </Layout>
 </template>
@@ -39,6 +40,7 @@ export default class AddTag extends Vue {
   }
 
   moneyType = this.$route.params.id;
+  tags = this.$store.state.tagList
 
   getType() {
     return this.moneyType === '-' ? '支出' : '收入';

@@ -3,10 +3,10 @@
     <Calculator :value.sync="record.amount" @submit="saveRecord"/>
 
     <div class="notes">
-      <FormItem :value.sync="record.notes" field-name="备注" placeholder="在此输入" @update:value="onUpdateNotes"/>
+      <FormItem :value.sync="record.notes" field-name="备注" placeholder="在此输入"/>
     </div>
 
-    <Tags :value1.sync="record.tagID" :type="record.type" :last-one="lastOne" />
+    <Tags :value1.sync="record.tagID" :type="record.type" :last-one="lastOne"/>
 
     <div class="in-out">
       <Tabs :data-source="typeList" :value.sync="record.type"/>
@@ -35,7 +35,7 @@ export default class Money extends Vue {
     type: '-',
     amount: 0,
   };
-  lastOne = ['settings', '设置']
+  lastOne = ['settings', '设置'];
 
   created() {
     this.$store.commit('fetchRecords');
@@ -50,7 +50,7 @@ export default class Money extends Vue {
       return window.alert('请选择标签');
     }
     this.$store.commit('createRecord', this.record);
-    this.record.notes = '';
+    window.location.reload();
   }
 }
 </script>

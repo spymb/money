@@ -96,11 +96,15 @@ export default class RecordList extends Vue {
       }
     }
     result.map(group => {
+      // @ts-ignore
       const initial: { [type: '-' | '+']: number } = {};
+      // @ts-ignore
       group.total = group.items.reduce((pre, item) => {
+        // @ts-ignore
         if (pre[item.type] !== undefined) {
+          // @ts-ignore
           pre[item.type] += item.amount;
-        } else {
+          // @ts-ignore
           pre[item.type] = item.amount;
         }
         return pre;

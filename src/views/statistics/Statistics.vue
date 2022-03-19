@@ -146,20 +146,20 @@ export default class Statistics extends Vue {
   }
 }
 ::v-deep .moneyTypeSelector {
+  font-size: 14px;
+  padding: 0 110px;
   margin: 10px 0;
 
   .tabs {
-    display: flex;
     justify-content: space-evenly;
-    padding: 0 120px;
+    display: flex;
 
     &-item {
-      font-size: 12px;
-      border-radius: 5px;
       border: 1px solid #cccccc;
-      width: 25%;
+      border-radius: 5px;
+      width: 30%;
       text-align: center;
-      padding: 3px 3px;
+      padding: 4px 0;
 
       &.selected {
         background: $mainColor;

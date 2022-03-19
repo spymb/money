@@ -21,5 +21,6 @@ git commit -m 'deployed'
 
 # 部署到 https://<USERNAME>.github.io/<REPO>
 git push -f git@github.com:spymb/money-deploy.git master:gh-pages
+#git push -f git@gitee.com:spym404/v-money.git master:gh-pages
 
 cd -
