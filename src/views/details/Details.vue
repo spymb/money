@@ -10,7 +10,7 @@
 
     <RecordList :date="selectedTime" :date-type="selectedDateType" />
 
-    <pop-up v-model="showDatePicker" position="bottom">
+    <pop-up v-model="showDatePicker" position="bottom" class="popup">
       <DatePicker :type="selectedDateType" v-model="selectedTime" @ok="showDatePicker = !showDatePicker"/>
     </pop-up>
   </Layout>

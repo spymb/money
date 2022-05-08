@@ -104,6 +104,7 @@ export default class RecordList extends Vue {
         if (pre[item.type] !== undefined) {
           // @ts-ignore
           pre[item.type] += item.amount;
+        } else {
           // @ts-ignore
           pre[item.type] = item.amount;
         }

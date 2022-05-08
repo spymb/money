@@ -1,21 +1,23 @@
 <template>
-  <OverLay
-      animation="fade"
-      :duration="duration"
-      :show="show"
-      @click="$emit('change', false)"
-  >
-    <transition :name="animateName" :duration="duration" appear>
-      <div
-          :style="{height: height}"
-          :class="popupClass"
-          v-show="show"
-          @click.stop
-      >
-        <slot/>
-      </div>
-    </transition>
-  </OverLay>
+  <div class="wrapper">
+    <OverLay
+        animation="fade"
+        :duration="duration"
+        :show="show"
+        @click="$emit('change', false)"
+    >
+      <transition :name="animateName" :duration="duration" appear>
+        <div
+            :style="{height: height}"
+            :class="popupClass"
+            v-show="show"
+            @click.stop
+        >
+          <slot/>
+        </div>
+      </transition>
+    </OverLay>
+  </div>
 </template>
 
 <script lang="ts">
@@ -52,31 +54,13 @@ export default class PopUp extends Vue {
 .popup {
   position: absolute;
   background-color: #fff;
-}
-.top {
-  top: 0;
-  left: 0;
-  width: 100%;
-}
-.left {
-  top: 0;
-  left: 0;
-  height: 100%;
-}
-.right {
-  top: 0;
-  right: 0;
-  height: 100%;
+  max-width: 420px;
 }
 .bottom {
   width: 100%;
   bottom: 0;
-  left: 0;
-}
-.center {
-  top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -0%);
   background: #fff;
 }
 </style>
