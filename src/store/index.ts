@@ -36,6 +36,7 @@ const store = new Vuex.Store({
     },
     saveRecords(state) {
       window.localStorage.setItem('recordList', JSON.stringify(state.recordList));
+      window.alert('成功添加记录');
     },
     createRecord(state, record: RecordItem) {
       const record2: RecordItem = clone(record);
@@ -74,6 +75,7 @@ const store = new Vuex.Store({
         } else {
           state.tagList.push({id, name, icon, type,});
           store.commit('saveTags');
+          window.alert('成功添加标签');
           window.location.reload();
         }
       }
@@ -89,6 +91,7 @@ const store = new Vuex.Store({
       if (index >= 0) {
         state.tagList.splice(index, 1);
         store.commit('saveTags');
+        window.alert('成功删除标签');
         window.location.reload();
       } else {
         alert('请选择标签');
@@ -99,12 +102,15 @@ const store = new Vuex.Store({
       const idList = state.tagList.map(item => item.id);
       if (idList.indexOf(id) >= 0) {
         const names = state.tagList.map(item => item.name);
-        if (names.indexOf(name) >= 0) {
+        if (name === '') {
+          window.alert('标签名不能为空');
+        } else if (names.indexOf(name) >= 0) {
           window.alert('标签名重复');
         } else {
           const tag = state.tagList.filter(item => item.id === id)[0];
           tag.name = name;
           store.commit('saveTags');
+          window.alert('成功修改标签名');
         }
       }
     },
