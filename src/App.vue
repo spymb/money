@@ -6,6 +6,7 @@
 <script lang="ts">
 export default {
   created() {
+    //@ts-ignore
     this.$store.commit('fetchTags');
   }
 };

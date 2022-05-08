@@ -6,7 +6,7 @@
       <Icon/>
     </header>
 
-    <NameTag :tag-i-d="selectedTagID" :holder="selectedTagName" :icon="selectedIcon"/>
+    <NameTag :tag-i-d="selectedTagID" :holder="selectedTagName" :icon="selectedIcon" maxlength="5"/>
 
     <Tags :type="moneyType" :last-one="lastOne"
           :value1.sync="selectedTagID"

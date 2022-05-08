@@ -6,13 +6,12 @@
       <Icon/>
     </header>
 
-    <NameTag :icon="selectedIcon" holder="添加标签名" :name.sync="newTagName"/>
+    <NameTag :icon="selectedIcon" holder="添加标签名" :name.sync="newTagName" maxlength="5"/>
     <IconList :icon.sync="selectedIcon"/>
 
     <div class="center">
       <div class="space"/>
       <button class="btn" @click="addTag">添加标签</button>
-      {{tags}}
     </div>
   </Layout>
 </template>

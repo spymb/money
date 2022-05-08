@@ -4,7 +4,7 @@
     <input type="text"
            :value="value"
            @input="onValueChanged($event.target.value)"
-           :placeholder="placeholder"/>
+           :placeholder="placeholder" :maxlength="maxlength"/>
   </label>
 </template>
 
@@ -17,6 +17,7 @@ export default class FormItem extends Vue {
   @Prop({default: ''}) value!: string;
   @Prop({required: true}) fieldName!: string;
   @Prop() placeholder?: string;
+  @Prop() maxlength?: number;
 
   onValueChanged(value: string) {
     // FormItem内容变动时触发更新事件

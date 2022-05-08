@@ -3,7 +3,7 @@
     <Calculator :value.sync="record.amount" @submit="saveRecord"/>
 
     <div class="notes">
-      <FormItem :value.sync="record.notes" field-name="备注" placeholder="在此输入"/>
+      <FormItem :value.sync="record.notes" field-name="备注" placeholder="在此输入" maxlength="32"/>
     </div>
 
     <Tags :value1.sync="record.tagID" :type="record.type" :last-one="lastOne"/>
@@ -48,6 +48,9 @@ export default class Money extends Vue {
   saveRecord() {
     if (this.record.tagID === '') {
       return window.alert('请选择标签');
+    }
+    if (this.record.notes.length > 32) {
+      return window.alert('备注不得超过32个字符');
     }
     this.$store.commit('createRecord', this.record);
     window.location.reload();

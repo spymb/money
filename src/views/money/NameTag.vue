@@ -6,10 +6,10 @@
 
     <input v-if="tagID" type="text"
            @blur="changeTagName(tagID, $event.target.value)"
-           :placeholder="holder" class="nameInput"/>
+           :placeholder="holder" class="nameInput" :maxlength="maxlength"/>
     <input v-if="holder==='添加标签名'" type="text"
            @blur="transName($event.target.value)"
-           :placeholder="holder" class="nameInput"/>
+           :placeholder="holder" class="nameInput" :maxlength="maxlength"/>
   </label>
 </template>
 
@@ -22,6 +22,7 @@ export default class NameTag extends Vue {
   @Prop() readonly icon!: string;
   @Prop() readonly holder!: string;
   @Prop() readonly tagID!: string;
+  @Prop() maxlength?: number;
 
   transName(name: string) {
     this.$emit('update:name', name);

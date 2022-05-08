@@ -49,7 +49,7 @@ const store = new Vuex.Store({
       if (!state.tagList || state.tagList.length === 0) {
         store.commit('createTag', {name: '餐饮', icon: 'canyin', type: '-'});
         store.commit('createTag', {name: '服饰', icon: 'fushi', type: '-'});
-        store.commit('createTag', {name: '读书', icon: 'dushu', type: '-'});
+        store.commit('createTag', {name: '书籍', icon: 'dushu', type: '-'});
         store.commit('createTag', {name: '交通', icon: 'jiaotong', type: '-'});
         store.commit('createTag', {name: '旅行', icon: 'lvxing', type: '-'});
         store.commit('createTag', {name: '日用', icon: 'riyongpin', type: '-'});
@@ -63,11 +63,14 @@ const store = new Vuex.Store({
     },
     createTag(state, {name, icon, type}: { name: string, icon: string, type: '-' | '+' }) {
       const id = createID().toString();
+      const names = state.tagList.map(item => item.name);
       if (icon === 'tag') {
         window.alert('请选择图标');
       } else {
         if (name === '') {
           window.alert('标签名不能为空');
+        } else if (names.indexOf(name) >= 0) {
+          window.alert('标签名不能重复');
         } else {
           state.tagList.push({id, name, icon, type,});
           store.commit('saveTags');
