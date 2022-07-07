@@ -1,12 +1,15 @@
 <template>
   <Layout>
     <header class="topBar">
-      <Icon name="left" @click.native="goBack"/>
-      <span>添加{{ getType() }}标签</span>
+      <Icon name="left" @click.native="$router.back()"/>
+      <span>添加{{ moneyType === '-' ? '支出' : '收入' }}标签</span>
       <Icon/>
     </header>
 
-    <NameTag :icon="selectedIcon" holder="添加标签名" :name.sync="newTagName" maxlength="5"/>
+    <NameTag
+        :value ="value"
+        :icon="selectedIcon" :name.sync="newTagName"
+        holder="添加标签名" maxlength="5"/>
     <IconList :icon.sync="selectedIcon"/>
 
     <div class="center">
@@ -19,30 +22,22 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-import router from '@/router';
-import IconList from '@/views/money/IconList.vue';
-import NameTag from '@/views/money/NameTag.vue';
+import IconList from '@/components/money/IconList.vue';
+import NameTag from '@/components/money/NameTag.vue';
 
 @Component({
   components: {NameTag, IconList}
 })
 export default class AddTag extends Vue {
-  newTagName = '';
+  value = '';
+  moneyType = this.$route.params.id;
   selectedIcon = 'tag';
+  newTagName = '';
 
   addTag() {
     this.$store.commit('createTag', {name: this.newTagName, icon: this.selectedIcon, type: this.moneyType});
-  }
-
-  goBack() {
-    router.back();
-  }
-
-  moneyType = this.$route.params.id;
-  tags = this.$store.state.tagList
-
-  getType() {
-    return this.moneyType === '-' ? '支出' : '收入';
+    this.selectedIcon = 'tag';
+    this.value = '';
   }
 }
 </script>
@@ -64,6 +59,7 @@ export default class AddTag extends Vue {
     fill: white;
   }
 }
+
 .center {
   display: flex;
   justify-content: center;

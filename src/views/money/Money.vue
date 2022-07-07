@@ -5,21 +5,21 @@
     <div class="notes">
       <FormItem :value.sync="record.notes" field-name="备注" placeholder="请在此输入" maxlength="32"/>
     </div>
-
-    <Tags :value1.sync="record.tagID" :type="record.type" :last-one="lastOne"/>
+    <Tags :id.sync="record.tagID" :icon.sync="record.icon" :name.sync="record.name"
+          :type="record.type" :last-one="lastOne"/>
 
     <div class="in-out">
-      <Tabs :data-source="typeList" :value.sync="record.type"/>
+      <Tabs :type.sync="record.type" :data-source="typeList"/>
     </div>
   </Layout>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import Calculator from '@/components/Money/Calculator.vue';
-import Tags from '@/components/Money/Tags.vue';
+import Calculator from '@/components/money/Calculator.vue';
+import Tags from '@/components/money/Tags.vue';
 import {Component} from 'vue-property-decorator';
-import FormItem from '@/components/Money/FormItem.vue';
+import FormItem from '@/components/money/FormItem.vue';
 import typeList from '@/constants/typeList';
 import Tabs from '@/components/Tabs.vue';
 import {RecordItem, Tag} from '@/store';
@@ -28,22 +28,9 @@ import {RecordItem, Tag} from '@/store';
   components: {Tabs, FormItem, Tags, Calculator}
 })
 export default class Money extends Vue {
+  record: RecordItem = {type: '-', tagID: '', icon: '', name: '', notes: '', amount: 0};
   typeList = typeList;
-  record: RecordItem = {
-    tagID: '',
-    notes: '',
-    type: '-',
-    amount: 0,
-  };
   lastOne = ['settings', '设置'];
-
-  created() {
-    this.$store.commit('fetchRecords');
-  }
-
-  onUpdateNotes(value: string) {
-    this.record.notes = value;
-  }
 
   saveRecord() {
     if (this.record.tagID === '') {
@@ -53,7 +40,11 @@ export default class Money extends Vue {
       return window.alert('金额不得为0');
     }
     this.$store.commit('createRecord', this.record);
-    window.location.reload();
+    this.record.tagID = '';
+    this.record.icon = '';
+    this.record.name = '';
+    this.record.notes = '';
+    this.record.amount = 0;
   }
 }
 </script>

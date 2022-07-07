@@ -1,33 +1,39 @@
 <template>
   <div class="picker-list-wrapper">
     <div class="picker-list-wheel">
-      <ul class="picker-list" :style="style" @touchstart="onTouchStart" @touchmove="onTouchMove"
-          @touchend="onTouchEnd">
+
+      <ul @touchstart="onTouchStart"
+          @touchmove="onTouchMove"
+          @touchend="onTouchEnd"
+          class="picker-list" :style="style">
         <li class="picker-list-item" v-for="item in listData" :key="item">{{ item }}</li>
       </ul>
+
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import {Vue, Component, Prop, Model, Watch} from "vue-property-decorator";
-type ListItem = string | number
+
 @Component
 export default class PickerList extends Vue {
-  @Prop({default: [], type: Array}) readonly listData!: Array<ListItem>
-  @Model('change', [String, Number]) readonly value!: ListItem
+  @Prop({default: [], type: Array}) readonly listData!: Array<number>
+  @Model('select', [String, Number]) readonly time!: number
+
   startY = 0
   startTop = 0
   style = {
     top: '0px',
     transition: 'none'
   }
+
   mounted() {
-    const index = this.listData.indexOf(this.value)
+    const index = this.listData.indexOf(this.time)
     this.style.top = - index * 30 + 'px'
   }
   @Watch('listData')
-  onListDataChange(val: Array<ListItem>) {
+  onListDataChange(val: Array<number>) {
     const curIndex = -Math.round(parseInt(this.style.top) / 30)
     if (curIndex >= this.listData.length) {
       this.style.top = -(this.listData.length - 1) * 30 + 'px'
@@ -56,7 +62,7 @@ export default class PickerList extends Vue {
     index >= this.listData.length && (index = this.listData.length - 1)
     this.style.top = -index * 30 + 'px'
     this.style.transition = 'top 200ms ease-in'
-    this.$emit('change', this.listData[index])
+    this.$emit('select', this.listData[index])
     e.preventDefault()
   }
 }

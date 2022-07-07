@@ -1,17 +1,22 @@
 <template>
   <Layout>
+    {{ value }}
     <header class="topBar">
-      <Icon name="left" @click.native="goBack"/>
-      <span>管理{{ getType() }}标签</span>
+      <Icon name="left" @click.native="$router.back()"/>
+      <span>管理{{ moneyType === '-' ? '支出' : '收入' }}标签</span>
       <Icon/>
     </header>
 
-    <NameTag :tag-i-d="selectedTagID" :holder="selectedTagName" :icon="selectedIcon" maxlength="5"/>
+    <NameTag :id.sync="selectedTagID"
+             :holder.sync="selectedTagName"
+             :icon.sync="selectedIcon"
+             :value.sync='value'
+             maxlength="5"/>
 
     <Tags :type="moneyType" :last-one="lastOne"
-          :value1.sync="selectedTagID"
-          :value2.sync="selectedIcon"
-          :value3.sync="selectedTagName"/>
+          :id.sync="selectedTagID"
+          :icon.sync="selectedIcon"
+          :name.sync="selectedTagName"/>
 
     <div class="center">
       <div class="space"/>
@@ -22,32 +27,25 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Tags from '@/components/Money/Tags.vue';
+import Tags from '@/components/money/Tags.vue';
 import {Component} from 'vue-property-decorator';
-import router from '@/router';
-import NameTag from '@/views/money/NameTag.vue';
+import NameTag from '@/components/money/NameTag.vue';
 
 @Component({
   components: {NameTag, Tags},
 })
 export default class setTag extends Vue {
-  lastOne = ['tianjia', '添加'];
+  value = '';
   selectedTagID = '0';
   selectedIcon = 'tag';
   selectedTagName = '更改标签名';
+  moneyType = this.$route.params.id;
+  lastOne = ['tianjia', '添加'];
 
   deleteTag() {
     this.$store.commit('removeTag', this.selectedTagID);
-  }
-
-  goBack() {
-    router.back();
-  }
-
-  moneyType = this.$route.params.id;
-
-  getType() {
-    return this.moneyType === '-' ? '支出' : '收入';
+    this.selectedIcon = 'tag';
+    this.selectedTagName = '更改标签名';
   }
 }
 </script>
@@ -84,7 +82,7 @@ export default class setTag extends Vue {
     font-size: 18px;
     border: none;
     padding: 8px 12px;
-    background: $mainColor;
+    background: #FF6161;
     border-radius: 4px;
     color: white;
   }

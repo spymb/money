@@ -1,6 +1,6 @@
 <template>
   <div class="datepicker">
-    <div class="date-picker-header">
+    <div class="picker-header">
       <button class="cancel-btn" @click="onCancel">取消</button>
       <header class="title">{{ dateStr }}</header>
       <button class="ok-btn" @click="onOk">确定</button>
@@ -18,79 +18,68 @@ import {Vue, Component, Model, Prop} from 'vue-property-decorator';
 import dayjs from 'dayjs';
 import PickerList from '@/components/date-picker/PickerList.vue';
 
-export type DatePickerType = 'year' | 'full-date' | 'year-month' | 'month-date'
+export type DatePickerType = 'year' | 'year-month' | 'full-date'
 @Component({
-  components: {
-    PickerList
-
-  }
+  components: {PickerList}
 })
 export default class DatePicker extends Vue {
-  @Model('change', {type: Date}) readonly value!: Date;
-  @Prop({default: '时间', type: String}) readonly pickerTitle?: string;
   @Prop({default: 'full-date', type: String}) readonly type?: DatePickerType;
-  year = dayjs(this.value).year();
-  // 从 1 开始
-  month = dayjs(this.value).month() + 1;
-  date = dayjs(this.value).date();
-  yearList: Array<string | number> = [];
+  @Model('select', {type: Date}) readonly time!: Date;
 
   created() {
     const ret = [];
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 10; i++) {
       ret.unshift(this.year - i);
     }
     this.yearList = ret;
-  }
-
-  get showYear() {
-    return this.type === 'full-date' || this.type === 'year-month' || this.type === 'year';
-  }
-
-  get showMonth() {
-    return this.type === 'full-date' || this.type === 'year-month' || this.type === 'month-date';
-  }
-
-  get showDate() {
-    return this.type === 'full-date' || this.type === 'month-date';
   }
 
   get dateStr() {
     if (this.type === 'full-date') {
       return `${this.year}-${this.month}-${this.date}`;
     }
-    if (this.type === 'month-date') {
-      return `${this.month}-${this.date}`;
-    }
     if (this.type === 'year-month') {
       return `${this.year}-${this.month}`;
     }
+    if (this.type === 'year') {
+      return `${this.year}`;
+    }
     return '';
   }
-
-  get daysInMonth() {
-    return dayjs().year(this.year).month(this.month - 1).daysInMonth();
+  onOk() {
+    this.$emit('select', this.fullDate);
+    this.$emit('ok');
   }
-
-  get monthList() {
-    return Array(12).fill(0).map((item, index) => index + 1);
+  onCancel() {
+    this.$emit('cancel');
   }
-
-  get dateList() {
-    return Array(this.daysInMonth).fill(0).map((item, index) => index + 1);
-  }
-
   get fullDate() {
     return new Date(dayjs().year(this.year).month(this.month - 1).date(this.date).valueOf());
   }
 
-  onOk() {
-    this.$emit('change', this.fullDate);
-    this.$emit('ok', this.fullDate);
+  get showYear() {
+    return this.type === 'full-date' || this.type === 'year-month' || this.type === 'year';
+  }
+  get showMonth() {
+    return this.type === 'full-date' || this.type === 'year-month'
+  }
+  get showDate() {
+    return this.type === 'full-date'
   }
 
-  onCancel() {
-    this.$emit('cancel', this.fullDate);
+  year = dayjs(this.time).year();
+  month = dayjs(this.time).month() + 1;
+  date = dayjs(this.time).date();
+
+  yearList: Array<number> = [];
+  get monthList() {
+    return Array(12).fill(0).map((item, index) => index + 1);
+  }
+  get dateList() {
+    return Array(this.daysInMonth).fill(0).map((item, index) => index + 1);
+  }
+  get daysInMonth() {
+    return dayjs().year(this.year).month(this.month - 1).daysInMonth();
   }
 }
 </script>
@@ -100,7 +89,7 @@ export default class DatePicker extends Vue {
 
 $list-item-height: 30px;
 .datepicker {
-  .date-picker-header {
+  .picker-header {
     padding: 6px;
     font-size: 20px;
     display: flex;

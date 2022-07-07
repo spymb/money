@@ -1,21 +1,20 @@
 <template>
-  <div ref="charts" :style="{width: width, height: height}"/>
+  <div ref="charts"/>
 </template>
 
 <script lang="ts">
 import {Vue, Component, Prop, Watch} from 'vue-property-decorator';
 import echarts, {ECharts} from 'echarts';
-import {mainColor} from '@/color';
+import {mainColor} from '@/constants/color';
 
 @Component
 export default class Chart extends Vue {
-  @Prop() readonly dateType!: 'year-month' | 'year';
-  @Prop() readonly moneyType!: '-' | '+';
   @Prop() readonly xData!: number[];
   @Prop() readonly yData!: { '+': number[]; '-': number[]; };
-  @Prop({default: '100%', type: String}) readonly width!: string;
-  @Prop({default: '300px', type: String}) readonly height!: string;
+  @Prop() readonly dateType!: 'year-month' | 'year';
+  @Prop() readonly moneyType!: '-' | '+';
 
+  charts: ECharts | null = null;
   get option() {
     return {
       tooltip: {
@@ -83,21 +82,24 @@ export default class Chart extends Vue {
       }]
     };
   }
-
-  charts: ECharts | null = null;
-
-  mounted() {
-    const container = this.$refs.charts as HTMLDivElement;
-    if (echarts === undefined) {return;}
-    this.charts = echarts.init(container);
+  @Watch('option')
+  onOptionUpdate() {
     // @ts-ignore
     this.charts.setOption(this.option);
   }
 
-  @Watch('option')
-  onOptionUpdate() {
+  mounted() {
+    const container = this.$refs.charts as HTMLDivElement;
+    this.charts = echarts.init(container);
     // @ts-ignore
-    this.charts?.setOption(this.option);
+    this.charts.setOption(this.option);
   }
 }
 </script>
+
+<style lang="scss" scoped>
+div {
+  width: 100%;
+  height: 200px;
+}
+</style>

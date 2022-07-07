@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
-import {RecordItem, Tag} from '@/store/index';
+import {RecordItem} from '@/store/index';
+import clone from '@/lib/clone';
 
 const getRecordsByTime = (records: RecordItem[], time: Date, unit: dayjs.UnitType) => {
   return records.filter(record => {
@@ -11,7 +12,6 @@ const getRecordsByType = (records: RecordItem[], type: '-' | '+') => {
     return r.type === type;
   });
 };
-const findTag = (tags: Tag[], id: string) => tags.filter(tag => tag.id === id)[0];
 const getSumForTags = (records: RecordItem[]) => {
   const initial: { [tagID: string]: number } = {};
   return records.reduce((pre, record) => {
@@ -25,10 +25,9 @@ const getSumForTags = (records: RecordItem[]) => {
 };
 const getSum =
   (records: RecordItem[], type: '-' | '+', time: string, dateType: 'full-date' | 'year-month' | 'year') => {
-    const recordsByType = getRecordsByType(records, type);
-    const recordsClone: RecordItem[] = JSON.parse(JSON.stringify((recordsByType)));
-    const recordsFormatTime = recordsClone.map(r => {
-      if (r === undefined) {return; }
+    const recordsC = clone(records)
+    const recordsByType = getRecordsByType(recordsC, type);
+    const recordsFormatTime = recordsByType.map(r => {
       if (dateType === 'full-date') {
         r['createdAt'] = dayjs(r.createdAt).format('YYYY-MM-DD');
       }
@@ -43,20 +42,17 @@ const getSum =
 
     const holder = {};
     recordsFormatTime.map(r => {
-      if (r === undefined) {return; }
-      // eslint-disable-next-line no-prototype-builtins,@typescript-eslint/ban-ts-comment
       // @ts-ignore
       // eslint-disable-next-line no-prototype-builtins
       if (holder.hasOwnProperty(r.createdAt)) {
         // @ts-ignore
-        holder[r.createdAt] = holder[r.createdAt] + r.amount;
+        holder[r.createdAt] += r.amount;
       } else {
         // @ts-ignore
         holder[r.createdAt] = r.amount;
       }
     });
 
-    // @ts-ignore
     if (dateType === 'full-date') {
       // @ts-ignore
       return holder[dayjs(time).format('YYYY-MM-DD')];
@@ -69,7 +65,6 @@ const getSum =
       // @ts-ignore
       return holder[dayjs(time).format('YYYY')];
     }
-
   };
 
-export {getRecordsByTime, getRecordsByType, findTag, getSumForTags, getSum};
+export {getRecordsByTime, getRecordsByType, getSumForTags, getSum};

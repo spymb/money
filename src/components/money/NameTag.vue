@@ -4,10 +4,13 @@
       <Icon :name="icon"/>
     </span>
 
-    <input v-if="tagID" type="text"
-           @blur="changeTagName(tagID, $event.target.value)"
+    <input v-if="id" type="text"
+           :value="value"
+           @blur="changeTagName(id, $event.target.value)"
            :placeholder="holder" class="nameInput" :maxlength="maxlength"/>
+
     <input v-if="holder==='添加标签名'" type="text"
+           :value="value"
            @blur="transName($event.target.value)"
            :placeholder="holder" class="nameInput" :maxlength="maxlength"/>
   </label>
@@ -20,17 +23,20 @@ import {Component, Prop} from 'vue-property-decorator';
 @Component
 export default class NameTag extends Vue {
   @Prop() readonly icon!: string;
+  @Prop() readonly id!: string;
   @Prop() readonly holder!: string;
-  @Prop() readonly tagID!: string;
+  @Prop() readonly value!: string;
   @Prop() maxlength?: number;
-
-  transName(name: string) {
-    this.$emit('update:name', name);
-  }
 
   changeTagName(id: string, name: string) {
     this.$store.commit('updateTag', {id, name});
-    window.location.reload();
+    this.$emit('update:id', '0')
+    this.$emit('update:holder', '更改标签名')
+    this.$emit('update:icon', 'tag')
+    this.$emit('update:value', '')
+  }
+  transName(name: string) {
+    this.$emit('update:name', name);
   }
 }
 </script>

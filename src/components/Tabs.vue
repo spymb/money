@@ -11,30 +11,25 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component, Prop} from 'vue-property-decorator';
-type DataSourceItem = {text: string, value: string}
+type DataSourceItem = {text: string, type: string}
 
 @Component
 export default class Tabs extends Vue {
   @Prop({required: true, type: Array})
   dataSource!: DataSourceItem[];
   @Prop(String)
-  readonly value!: string;
+  readonly type!: string;
   @Prop(String)
   classPrefix?: string;
 
+  select(item: DataSourceItem) {
+    this.$emit('update:type', item.type)
+  }
   liClass(item: DataSourceItem) {
     return {
       [this.classPrefix + '-tabs-item']: this.classPrefix,
-      selected: item.value === this.value
+      selected: item.type === this.type
     }
-  }
-
-  select(item: DataSourceItem) {
-    this.$emit('update:value', item.value)
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

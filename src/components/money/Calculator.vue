@@ -32,14 +32,12 @@ export default class Calculator extends Vue {
   inputContent(event: MouseEvent) {
     // 强制指定类型
     const button = event.target as HTMLButtonElement;
-    // 不为空
     const input = button.textContent!;
 
     // 第1个逻辑，判断输出长度
     if (this.output.length === 16) {
       return;
     }
-
     // 第2个逻辑，如果输出已经是0
     if (this.output === "0") {
       // 如果输入是0123456789中的任意一个
@@ -52,12 +50,10 @@ export default class Calculator extends Vue {
       }
       return;
     }
-
     // 第3个逻辑，如果再次出现.
     if (this.output.indexOf(".") >= 0 && input === ".") {
       return;
     }
-
     // 除了3个特殊逻辑的一般逻辑，不要忘记
     this.output += input;
   }
@@ -69,11 +65,9 @@ export default class Calculator extends Vue {
       this.output = this.output.slice(0, -1);
     }
   }
-
   clear() {
     this.output = "0";
   }
-
   ok() {
     const number = parseFloat(this.output);
     this.$emit("update:value", number);

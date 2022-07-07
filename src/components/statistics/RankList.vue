@@ -1,19 +1,24 @@
 <template>
   <div class="wrapper">
-    <div class="rankTitle">{{rankTitle}}</div>
+    <div class="rankTitle">{{moneyType === '-' ? '支出排行' : '收入排行'}}</div>
+
     <div v-if="tagRankData.length === 0" class="message">暂无数据</div>
+
     <ol v-else class="tag-rank-list">
-      <li class="rank-list-item" v-for="item in tagRankData" :key="item.tag.id">
+      <li class="rank-list-item" v-for="item in tagRankData" :key="item.tag.name">
         <div class="icon-wrapper">
           <Icon class="icon" :name="item.tag.icon"/>
         </div>
+
         <div class="info">
           <span class="text-info">
             <span class="icon-name">{{ item.tag.name }}</span>
             <span class="percent">{{ item.percent.toFixed(2) }}%</span>
           </span>
+
           <div class="percent-bar" :style="{width: item.percent + '%'}"></div>
         </div>
+
         <span class="amount">￥{{ item.sum }}</span>
       </li>
     </ol>
@@ -24,7 +29,8 @@
 import Vue from 'vue';
 import {Component, Prop} from 'vue-property-decorator';
 import {RootState} from '@/store';
-import {findTag, getRecordsByTime, getRecordsByType, getSumForTags} from '@/store/utils';
+import {getRecordsByTime, getRecordsByType, getSumForTags} from '@/store/utils';
+import clone from '@/lib/clone';
 
 @Component
 export default class RankList extends Vue {
@@ -32,45 +38,51 @@ export default class RankList extends Vue {
   @Prop() readonly curDate!: Date;
   @Prop() readonly moneyType!: '-' | '+';
 
-  get rankTitle() {
-    return this.moneyType === '-' ? '支出排行' : '收入排行';
+  beforeCreate() {
+    this.$store.commit('fetchRecords');
   }
-
-  get recordList() {
-    return (this.$store.state as RootState).recordList;
-  }
-
-  get tagList() {
-    return (this.$store.state as RootState).tagList;
-  }
+  recordList = (this.$store.state as RootState).recordList;
 
   get tagRankData() {
-    let records = this.recordList;
-    records = this.dateType === 'year-month' ?
+    let records = clone(this.recordList)
+    // 按时间类型和‘支出收入’分好组, 比如同月所有的支出记录
+    const recordsByDateType = this.dateType === 'year-month' ?
         getRecordsByTime(records, this.curDate, 'month') : getRecordsByTime(records, this.curDate, 'year');
-    records = getRecordsByType(records, this.moneyType);
-    const sumsForTags = getSumForTags(records);
-    const ret = Object.entries(sumsForTags);
-    const total = ret.reduce((acc, item) => acc + item[1], 0);
-    ret.sort((a, b) => b[1] - a[1]);
-    return ret.map(item => {
+
+    const recordsByMoneyType = getRecordsByType(recordsByDateType, this.moneyType);
+
+    // 再按标签计算金钱, 比如所有(这月支出)在吃饭上、衣服上...
+    // {衣: 1, 食: 2, 住: 3, 行: 4}
+    const sumsForTags = getSumForTags(recordsByMoneyType);
+
+    // [[衣, 1], [], [], []]
+    const result = Object.entries(sumsForTags);
+    // 所有标签金钱总和
+    const total = result.reduce((sum, item) => sum + item[1], 0);
+    // 排序
+    result.sort((a, b) => b[1] - a[1]);
+
+    const getTagFromRecords = (id: string) => {
+      const array = records.map(record => {
+        if(record.tagID === id)
+          return {icon: record.icon, name: record.name}
+      })
+      return array.filter(Boolean)[0]
+    }
+
+    return result.map(item => {
       return {
-        tag: findTag(this.tagList, item[0]),
+        tag: getTagFromRecords(item[0]),
         sum: item[1],
         percent: item[1] / total * 100
       };
     });
   }
-
-  beforeCreate() {
-    this.$store.commit('fetchRecords');
-    this.$store.commit('fetchTags');
-  }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "src/assets/style/helper";
+@import "../../assets/style/helper";
 .wrapper {
   box-shadow: inset 0 5px 5px -5px rgba(0, 0, 0, 0.1);
   margin-top: 10px;

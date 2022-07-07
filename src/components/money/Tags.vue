@@ -2,8 +2,8 @@
   <div class="tags">
     <ol>
       <li v-for="tag in tagsByType" :key="tag.id"
-          :class="{selected: tag === selectedTag}"
-          @click="onToggleTag(tag)">
+          :class="{selected: id !== '' && id !== '0' && tag === selectedTag}"
+          @click="selectTag(tag)">
         <div>
           <Icon :name="tag.icon"/>
         </div>
@@ -37,7 +37,9 @@ import {Tag} from '@/store';
 export default class Tags extends mixins(TagHelper) {
   @Prop() readonly type!: '-' | '+';
   @Prop() readonly lastOne!: [];
-
+  @Prop() readonly id?: string;
+  @Prop() readonly icon?: string;
+  @Prop() readonly name?: string;
 
   created() {
     this.$store.commit('fetchTags');
@@ -48,12 +50,13 @@ export default class Tags extends mixins(TagHelper) {
   }
 
   selectedTag = {id: '', name: '', icon: '', type: '-'};
-
-  onToggleTag(tag: {id: string, name: string, icon: string, type: '-'|'+'}) {
-    this.selectedTag = tag !== this.selectedTag ? tag : {id: '', name: '', icon: '', type: '-'};
-    this.$emit('update:value1', this.selectedTag.id);
-    this.$emit('update:value2', this.selectedTag.icon);
-    this.$emit('update:value3', this.selectedTag.name);
+  selectTag(tag: Tag) {
+    if(tag !== this.selectedTag) {
+      this.selectedTag = tag
+    }
+    this.$emit('update:id', this.selectedTag.id);
+    this.$emit('update:icon', this.selectedTag.icon);
+    this.$emit('update:name', this.selectedTag.name);
   }
 }
 </script>

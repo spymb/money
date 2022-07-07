@@ -1,62 +1,33 @@
 <template>
   <div class="wrapper">
-    <OverLay
-        animation="fade"
-        :duration="duration"
-        :show="show"
-        @click="$emit('change', false)"
-    >
-      <transition :name="animateName" :duration="duration" appear>
-        <div
-            :style="{height: height}"
-            :class="popupClass"
-            v-show="show"
-            @click.stop
-        >
+    <OverLay animation="fade" :duration="300"
+        :visible="visible"
+        @click.native="$emit('show', false)">
+
+      <transition name="fade" :duration="300" appear>
+        <div v-show="visible" @click.stop class="popup">
           <slot/>
         </div>
       </transition>
+
     </OverLay>
   </div>
 </template>
 
 <script lang="ts">
-import {Component, Vue, Prop, Model} from 'vue-property-decorator'
-import OverLay from './OverLay.vue'
-type PopupPosition = 'top' | 'left' | 'right' | 'bottom' | 'center'
-@Component({
-  components: {
-    OverLay
-  }
-})
+import {Component, Vue, Model} from 'vue-property-decorator';
+import OverLay from './OverLay.vue';
+
+@Component({components: {OverLay}})
 export default class PopUp extends Vue {
-  @Model('change', { type: Boolean, required: true }) readonly show!: boolean
-  @Prop({default: 'center'}) readonly position!: PopupPosition
-  @Prop({default: 300}) readonly duration!: number
-  @Prop(String) readonly height?: string
-  get popupClass() {
-    return {
-      'popup': true,
-      [this.position]: this.position
-    }
-  }
-  get animateName() {
-    if (this.position !== 'center') {
-      return `slide-from-${this.position}`
-    } else {
-      return 'fade'
-    }
-  }
+  @Model('show', {type: Boolean, required: true}) readonly visible!: boolean;
 }
 </script>
 
 <style lang="scss" scoped>
 .popup {
   position: absolute;
-  background-color: #fff;
   max-width: 420px;
-}
-.bottom {
   width: 100%;
   bottom: 0;
   left: 50%;

@@ -4,8 +4,8 @@ import Money from '@/views/money/Money.vue'
 import SetTag from '@/views/money/SetTag.vue'
 import NotFound from '@/views/NotFound.vue';
 import AddTag from '@/views/money/AddTag.vue';
-import Details from '@/views/details/Details.vue';
-import Statistics from '@/views/statistics/Statistics.vue';
+import Details from '@/views/Details.vue';
+import Statistics from '@/views/Statistics.vue';
 
 Vue.use(VueRouter)
 

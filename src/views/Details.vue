@@ -1,17 +1,19 @@
 <template>
   <Layout class-prefix="yyy">
     <div class="dateTypeSelector">
-      <Tabs :data-source="dateTypes" :value.sync="selectedDateType"/>
+      <Tabs :type.sync="selectedDateType" :data-source="dateTypes"/>
     </div>
 
-    <div @click="showDatePicker=true" class="dateSelector">
+    <div @click="datePickerVisible=true" class="dateSelector">
       {{dateStr}}&#9660;
     </div>
 
-    <RecordList :date="selectedTime" :date-type="selectedDateType" />
+    <RecordList :date-type="selectedDateType" :date="selectedTime" />
 
-    <pop-up v-model="showDatePicker" position="bottom" class="popup">
-      <DatePicker :type="selectedDateType" v-model="selectedTime" @ok="showDatePicker = !showDatePicker"/>
+    <pop-up v-model="datePickerVisible">
+      <DatePicker :type="selectedDateType" v-model="selectedTime"
+                  @ok="datePickerVisible = false"
+                  @cancel="datePickerVisible = false"/>
     </pop-up>
   </Layout>
 </template>
@@ -23,19 +25,19 @@ import Tabs from '@/components/Tabs.vue';
 import DatePicker from '@/components/date-picker/DatePicker.vue';
 import PopUp from '@/components/date-picker/PopUp.vue';
 import dayjs from 'dayjs';
-import RecordList from '@/views/details/RecordList.vue';
+import RecordList from '@/components/details/RecordList.vue';
 
 @Component({
   components: {RecordList, PopUp, DatePicker, Tabs}
 })
 export default class Details extends Vue {
   dateTypes = [
-    {text: '日', value: 'full-date'},
-    {text: '月', value: 'year-month'},
+    {text: '日', type: 'full-date'},
+    {text: '月', type: 'year-month'},
   ];
+  datePickerVisible = false;
   selectedDateType = 'full-date';
   selectedTime = new Date();
-  showDatePicker = false;
 
   get dateStr() {
     if (this.selectedDateType === 'full-date') {
@@ -44,12 +46,11 @@ export default class Details extends Vue {
       return dayjs(this.selectedTime).format('YYYY年M月')
     }
   }
-
 }
 </script>
 
 <style lang="scss" scoped>
-@import "src/assets/style/helper";
+@import "../assets/style/helper";
 .dateSelector {
   box-shadow: inset 0 -5px 5px -5px rgba(0, 0, 0, 0.25);
   background: white;

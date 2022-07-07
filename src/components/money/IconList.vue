@@ -1,10 +1,10 @@
 <template>
   <ol>
-    <li v-for="icon in IconNames" :key="icon"
-        :class="{selected: icon === selectedIcon}"
-        @click="onToggleIcon(icon)">
+    <li v-for="i in IconNames" :key="i"
+        :class="{selected: icon !== 'tag' && i === selectedIcon}"
+        @click="selectIcon(i)">
       <div>
-        <Icon :name="icon"/>
+        <Icon :name="i"/>
       </div>
     </li>
   </ol>
@@ -12,22 +12,25 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
+import {Component, Prop} from 'vue-property-decorator';
 
 @Component
 export default class IconList extends Vue {
+  @Prop() readonly icon!: string;
   IconNames = ['canyin', 'custom', 'dushu', 'fushi', 'gongzi', 'jianzhi', 'jiaotong', 'licai', 'lvxing', 'riyongpin', 'shejiao', 'yundong', 'hongbao', 'jiangjin', 'huazhuang', 'shuma', 'yule'];
   selectedIcon = '';
 
-  onToggleIcon(icon: string) {
-    this.selectedIcon = icon !== this.selectedIcon ? icon : '';
+  selectIcon(icon: string) {
+    if(icon !== this.selectedIcon) {
+      this.selectedIcon = icon
+    }
     this.$emit('update:icon', icon)
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "src/assets/style/helper";
+@import "../../assets/style/helper";
 
 ol {
   display: flex;
