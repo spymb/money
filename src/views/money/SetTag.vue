@@ -7,12 +7,6 @@
       <Icon/>
     </header>
 
-    <NameTag :id.sync="selectedTagID"
-             :holder.sync="selectedTagName"
-             :icon.sync="selectedIcon"
-             :value.sync='value'
-             maxlength="5"/>
-
     <Tags :type="moneyType" :last-one="lastOne"
           :id.sync="selectedTagID"
           :icon.sync="selectedIcon"

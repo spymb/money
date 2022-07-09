@@ -97,23 +97,6 @@ const store = new Vuex.Store({
         alert('请选择标签');
       }
     },
-    updateTag(state, payload: { id: string, name: string }) {
-      const {id, name} = payload;
-      const idList = state.tagList.map(item => item.id);
-      if (idList.indexOf(id) >= 0) {
-        const names = state.tagList.map(item => item.name);
-        if (name === '') {
-          window.alert('标签名不能为空');
-        } else if (names.indexOf(name) >= 0) {
-          window.alert('标签名重复');
-        } else {
-          const tag = state.tagList.filter(item => item.id === id)[0];
-          tag.name = name;
-          store.commit('saveTags');
-          window.alert('成功修改标签名');
-        }
-      }
-    },
   },
 });
 
