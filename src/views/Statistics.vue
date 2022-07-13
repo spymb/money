@@ -1,11 +1,11 @@
 <template>
   <Layout>
-    <div class="dateTypeSelector">
+    <div class="dateTypeSelector" ref="dts">
       <Tabs :data-source="dateTypes" :type.sync="selectedDateType"/>
     </div>
 
     <div class="time-money">
-      <div class="time" @click="showDatePicker=true">
+      <div class="time" @click="select">
         {{ dateStr }}&#9660;
       </div>
       <div class="money">
@@ -23,9 +23,9 @@
 
     <RankList :money-type="selectedMoneyType" :date-type="selectedDateType" :cur-date="selectedTime"/>
 
-    <pop-up v-model="showDatePicker">
+    <pop-up v-model="datePickerVisible">
       <DatePicker :type="selectedDateType" v-model="selectedTime"
-                  @ok="showDatePicker = false" @cancel="showDatePicker = false"/>
+                  @ok="datePickerVisible = false" @cancel="datePickerVisible = false"/>
     </pop-up>
   </Layout>
 </template>
@@ -58,13 +58,21 @@ export default class Statistics extends Vue {
   ];
   selectedMoneyType = '-';
   selectedTime = new Date();
-  showDatePicker = false;
+  datePickerVisible = false;
   records = (this.$store.state as RootState).recordList;
-  recordList = clone(this.records)
-  recordList1 = clone(this.records)
+  recordList = clone(this.records);
+  recordList1 = clone(this.records);
 
   beforeCreate() {
     this.$store.commit('fetchRecords');
+  }
+
+  select() {
+    this.datePickerVisible = true;
+    const dts = document.querySelector('.dateTypeSelector');
+    if (dts && dts.clientWidth > 450) {
+      window.alert('日期选择仅支持触屏，请使用手机体验');
+    }
   }
 
   get dateStr() {
@@ -78,6 +86,7 @@ export default class Statistics extends Vue {
   get outcome() {
     return getSum(this.recordList, '-', this.selectedTime.toISOString(), this.selectedDateType) || 0;
   }
+
   get income() {
     return getSum(this.recordList, '+', this.selectedTime.toISOString(), this.selectedDateType) || 0;
   }
@@ -85,15 +94,19 @@ export default class Statistics extends Vue {
   get xData() {
     return this.selectedDateType === 'year-month' ? this.dateArr : this.monthArr;
   }
+
   get yData() {
     return this.selectedDateType === 'year-month' ?
         this.getSumByDates(this.records, this.selectedTime) :
         this.getSumForMonths(this.records, this.selectedTime);
   }
+
   get dateArr() {
     return Array(dayjs(this.selectedTime).daysInMonth()).fill(0).map((_, index) => index + 1);
   }
+
   monthArr = Array(12).fill(0).map((_, index) => index + 1);
+
   getSumByDates(records: RecordItem[], date: Date) {
     const recordsByMonth = getRecordsByTime(records, date, 'month');
     const initial = {
@@ -105,6 +118,7 @@ export default class Statistics extends Vue {
       return result;
     }, initial);
   }
+
   getSumForMonths(records: RecordItem[], date: Date) {
     const recordsByYear = getRecordsByTime(records, date, 'year');
     const initial = {
@@ -121,6 +135,7 @@ export default class Statistics extends Vue {
 
 <style lang="scss" scoped>
 @import "../assets/style/helper";
+
 .time-money {
   box-shadow: inset 0 -5px 5px -5px rgba(0, 0, 0, 0.25);
   background: white;
@@ -137,6 +152,7 @@ export default class Statistics extends Vue {
     }
   }
 }
+
 ::v-deep .moneyTypeSelector {
   font-size: 14px;
   padding: 0 110px;

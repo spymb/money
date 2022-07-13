@@ -39,6 +39,14 @@ export default class Details extends Vue {
   selectedDateType = 'full-date';
   selectedTime = new Date();
 
+  select() {
+    this.datePickerVisible = true;
+    const dts = document.querySelector('.dateTypeSelector');
+    if (dts && dts.clientWidth > 450) {
+      window.alert('日期选择仅支持触屏，请使用手机体验');
+    }
+  }
+
   get dateStr() {
     if (this.selectedDateType === 'full-date') {
       return dayjs(this.selectedTime).format('YYYY年M月D日')

@@ -18,3 +18,11 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app');
+
+/*const app = document.querySelector('#app')
+if (app && app.clientWidth > 420) {
+  setTimeout(()=> {
+    window.alert('请使用手机预览')
+  })
+}*/
+
