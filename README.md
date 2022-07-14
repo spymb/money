@@ -1,4 +1,5 @@
-# money
+# vMoney 记账
+![vcode](https://user-images.githubusercontent.com/81686499/178952099-1a899421-6a30-45fc-9374-509efe2b2263.png)
 
 ## Project setup
 ```
@@ -14,16 +15,3 @@ yarn serve
 ```
 yarn build
 ```
-
-### Run your unit tests
-```
-yarn test:unit
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
