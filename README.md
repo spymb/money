@@ -1,5 +1,5 @@
 # vMoney 记账
-一款基于 Vue 2 | Vue CLI | Vue Router 3 | Vuex 3 | TypeScript 的极简记账应用。
+一款基于 **Vue 2** | **Vue CLI** | **Vue Router 3** | **Vuex 3** | **TypeScript** 的极简记账应用。
 
 特点是快速记账，生成流水并进行统计分析，通过 ECharts 折线图展示收支趋势。
 
@@ -19,7 +19,7 @@ yarn install
 
 ### Compiles and hot-reloads for development
 ```
-yarn serve
+yarn dev
 ```
 
 ### Compiles and minifies for production
