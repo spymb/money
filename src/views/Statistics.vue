@@ -1,6 +1,6 @@
 <template>
   <Layout>
-    <div class="dateTypeSelector" ref="dts">
+    <div class="dateTypeSelector">
       <Tabs :data-source="dateTypes" :type.sync="selectedDateType"/>
     </div>
 
@@ -23,7 +23,7 @@
 
     <RankList :money-type="selectedMoneyType" :date-type="selectedDateType" :cur-date="selectedTime"/>
 
-    <pop-up v-model="datePickerVisible">
+    <pop-up v-model="datePickerVisible" position="bottom">
       <DatePicker :type="selectedDateType" v-model="selectedTime"
                   @ok="datePickerVisible = false" @cancel="datePickerVisible = false"/>
     </pop-up>
@@ -34,7 +34,7 @@
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import Tabs from '@/components/Tabs.vue';
-import PopUp from '@/components/date-picker/PopUp.vue';
+import PopUp from '@/components/PopUp.vue';
 import DatePicker from '@/components/date-picker/DatePicker.vue';
 import dayjs from 'dayjs';
 import {getRecordsByTime, getSum} from '@/store/utils';
@@ -69,8 +69,7 @@ export default class Statistics extends Vue {
 
   select() {
     this.datePickerVisible = true;
-    const dts = document.querySelector('.dateTypeSelector');
-    if (dts && dts.clientWidth > 450) {
+    if (document.documentElement.clientWidth > 450) {
       window.alert('日期选择仅支持触屏，请使用手机体验');
     }
   }
